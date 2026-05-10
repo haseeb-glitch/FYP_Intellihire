@@ -426,6 +426,7 @@ export const Interview = () => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState('');
+  const [pendingNextQuestion, setPendingNextQuestion] = useState(null);
 
   const setRecordingState = (val) => {
     setIsRecording(val);
@@ -503,9 +504,11 @@ export const Interview = () => {
       if (data.finished) {
         setFinished(true);
         setShowNextButton(false);
+        setPendingNextQuestion(null);
         try { await interviewAPI.completeInterview(sessionId); } catch (e) {}
         setTimeout(() => navigate(`/results?session=${sessionId}`), 2500);
       } else if (data.next_question) {
+        setPendingNextQuestion(data.next_question);
         setShowNextButton(true);
       }
     } catch (err) {
@@ -517,9 +520,9 @@ export const Interview = () => {
   };
 
   const handleNextQuestion = () => {
-    if (!questions[questionIdx + 1]) return;
+    const nextQ = pendingNextQuestion || questions[questionIdx + 1];
+    if (!nextQ) return;
     
-    const nextQ = questions[questionIdx + 1];
     setQuestionIdx(prev => prev + 1);
     const newDiff = nextQ.difficulty || 'easy';
     setCurrentDifficulty(newDiff);
@@ -530,6 +533,7 @@ export const Interview = () => {
     setUserAnswer('');
     setFeedback('');
     setShowNextButton(false);
+    setPendingNextQuestion(null);
     setTextInput('');
   };
 
@@ -778,7 +782,8 @@ export const Interview = () => {
 
       mediaRecorder.onstop = async () => {
         if (audioChunksRef.current.length === 0) {
-           setTranscript(prev => [...prev, { role: 'ai', text: 'No audio captured.' }]);
+           setUserAnswer('');
+           setFeedback('No audio was captured. Please record your answer again.');
            return;
         }
 
@@ -796,29 +801,23 @@ export const Interview = () => {
         try {
           const res = await interviewAPI.submitAudioAnswer(sessionId, formData);
           const data = res.data;
-          const newMessages = [];
-          // Use local transcript as immediate display if backend is empty
           const userTranscript = data.transcript || localTranscript || '(Audio Answer)';
-          newMessages.push({ role: 'user', text: userTranscript });
-
-          if (data.feedback) newMessages.push({ role: 'feedback', text: data.feedback });
+          setUserAnswer(userTranscript);
+          setFeedback(data.feedback || 'Your audio answer was processed.');
 
           if (data.finished) {
              setFinished(true);
-             newMessages.push({ role: 'ai', text: 'Excellent! Interview complete.' });
-             setTranscript(prev => [...prev, ...newMessages]);
+             setShowNextButton(false);
+             setPendingNextQuestion(null);
              try { await interviewAPI.completeInterview(sessionId); } catch (e) {}
              setTimeout(() => navigate(`/results?session=${sessionId}`), 2500);
           } else if (data.next_question) {
-             const nextQ = data.next_question;
-             setQuestionIdx(prev => prev + 1);
-             setCurrentDifficulty(nextQ.difficulty || 'easy');
-             setCurrentQuestion(nextQ);
-             newMessages.push({ role: 'ai', text: nextQ.text || nextQ.question_text, question_type: nextQ.type, difficulty: nextQ.difficulty });
-             setTranscript(prev => [...prev, ...newMessages]);
+             setPendingNextQuestion(data.next_question);
+             setShowNextButton(true);
           }
         } catch (err) {
-          setTranscript(prev => [...prev, { role: 'ai', text: 'Encountered an error. Retrying...' }]);
+          setFeedback('Encountered an error while processing your audio. Please try again.');
+          setShowNextButton(true);
         } finally {
           setSubmitting(false);
           setLocalTranscript('');
@@ -850,7 +849,7 @@ export const Interview = () => {
   const progress = Math.round(((questionIdx + 1) / totalQuestions) * 100);
   const currentQ = currentQuestion || questions[questionIdx];
   const activeQuestionText = currentQ?.question_text || currentQ?.text;
-  const qType = currentQ?.question_type || 'technical';
+  const qType = currentQ?.question_type || currentQ?.type || 'technical';
   const diffStyle = difficultyColors[currentDifficulty] || difficultyColors.easy;
 
   return (

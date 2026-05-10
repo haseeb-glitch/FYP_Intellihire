@@ -85,6 +85,16 @@ NEVER default to 5.0. If the candidate gives wrong answers or says 'I don't know
                 result["efficiency"] = code_evaluation.get("efficiency", result.get("efficiency", 5.0))
                 result["overall"] = (result.get("overall", 5.0) + code_overall) / 2
 
+        # Ensure efficiency is always present and valid (0-10)
+        eff = result.get("efficiency", None)
+        try:
+            eff = float(eff)
+            if not (0 <= eff <= 10):
+                eff = 5.0
+        except Exception:
+            eff = 5.0
+        result["efficiency"] = eff
+
         return result
     except Exception as e:
         print(f"Technical Agent Error: {e}")
