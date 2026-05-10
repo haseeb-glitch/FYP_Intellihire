@@ -1,28 +1,36 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ScrollZoom() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const sectionRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let rafId = null;
+
     const handleScroll = () => {
-      const section = sectionRef.current;
-      if (!section) return;
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const sectionTop = rect.top;
-      const sectionHeight = rect.height;
-      const scrolled = -sectionTop;
-      const scrollable = sectionHeight - windowHeight;
-      const p = Math.min(Math.max(scrolled / scrollable, 0), 1);
-      setProgress(p);
+      // Throttle to one getBoundingClientRect() per animation frame to prevent layout thrashing
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const section = sectionRef.current;
+        if (!section) return;
+        const rect = section.getBoundingClientRect();
+        const scrollable = rect.height - window.innerHeight;
+        const p = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+        setProgress(p);
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const zoomProgress = Math.min(progress / 0.55, 1);
@@ -90,7 +98,7 @@ export default function ScrollZoom() {
           </p>
 
           <button
-            onClick={() => navigate('/signup')}
+            onClick={() => navigate(user ? '/dashboard' : '/signup')}
             style={{ marginTop: "2.5rem", padding: "0.75rem 2.25rem", backgroundColor: "#ffffff", color: "#000000", border: "none", borderRadius: "2px", fontFamily: "'Courier New', monospace", fontSize: "0.75rem", letterSpacing: "0.2em", textTransform: "uppercase", cursor: "pointer", fontWeight: 700 }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#dddddd")}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#ffffff")}

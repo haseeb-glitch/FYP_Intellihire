@@ -428,7 +428,7 @@ async def complete_interview(session_id):
         stress_composure=stress_detailed.get('composure', 0.0),
         stress_eye_contact=stress_detailed.get('eye_contact', 0.0),
         stress_vocal_steadiness=stress_detailed.get('vocal_steadiness', 0.0),
-        stress_text_confidence=stress_detailed.get('text_confidence', 0.0),
+        stress_text_confidence=stress_detailed.get('confidence', 0.0),
         stress_filler_words=stress_detailed.get('filler_words', 0.0),
         stress_response_coherence=stress_detailed.get('response_coherence', 0.0),
         stress_pressure_handling=stress_detailed.get('pressure_handling', 0.0),
@@ -521,7 +521,8 @@ def _aggregate_agent_subscores(questions, agent_type):
     elif agent_type == 'stress':
         scores = {
             'composure': [], 'confidence': [], 'stress_management': [],
-            'eye_contact': [], 'vocal_steadiness': []
+            'eye_contact': [], 'vocal_steadiness': [], 'pressure_handling': [],
+            'response_coherence': [], 'filler_words': [],
         }
         for q in relevant_qs:
             qs = q.question_scores or {}

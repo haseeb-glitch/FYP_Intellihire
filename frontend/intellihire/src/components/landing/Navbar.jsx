@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
 
 const navLinks = [
   { label: 'Features', href: '#features' },
@@ -10,6 +11,7 @@ const navLinks = [
 
 export default function LandingNavbar() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [vh, setVh] = useState(1000);
   const [zoomOffset, setZoomOffset] = useState(999999);
@@ -188,7 +190,7 @@ export default function LandingNavbar() {
           </div>
 
           <div className="hidden md:block flex-shrink-0">
-            <button onClick={() => navigate('/signup')} className="ih-cta">Get Started</button>
+            <button onClick={() => navigate(user ? '/dashboard' : '/signup')} className="ih-cta">Get Started</button>
           </div>
 
           <div className="md:hidden ml-auto flex flex-col gap-[5px] cursor-pointer p-2">

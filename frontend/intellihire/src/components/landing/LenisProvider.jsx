@@ -3,6 +3,7 @@ import Lenis from '@studio-freight/lenis';
 
 export default function LenisProvider({ children }) {
   const lenisRef = useRef(null);
+  const rafIdRef = useRef(null);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -20,13 +21,19 @@ export default function LenisProvider({ children }) {
 
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafIdRef.current = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafIdRef.current = requestAnimationFrame(raf);
 
     return () => {
+      // Cancel the loop before destroying so it doesn't fire after unmount
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 

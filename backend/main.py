@@ -36,6 +36,7 @@ from backend.routes.report_routes import report_router
 from backend.routes.admin_routes import admin_router
 from backend.routes.personalized_routes import personalized_router
 from backend.routes.video_routes import video_router
+from backend.routes.coach_routes import coach_router
 
 app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(interview_router, prefix="/api/interview", tags=["Interview"])
@@ -43,4 +44,5 @@ app.include_router(report_router, prefix="/api/report", tags=["Reports"])
 app.include_router(admin_router, prefix="/api/admin", tags=["Admin"])
 app.include_router(personalized_router, prefix="/api/personalized", tags=["Personalized"])
 app.include_router(video_router, prefix="/api/video", tags=["Video Analysis"])
+app.include_router(coach_router, prefix="/api/coach", tags=["AI Coach"])
 

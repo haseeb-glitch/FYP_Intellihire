@@ -1,56 +1,115 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { PageTransition } from '../components/layout/PageTransition';
 import { GlassCard } from '../components/ui/GlassCard';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Send, User, MessageSquare, Plus, Sparkles, Trash2 } from 'lucide-react';
-
-const CHAT_HISTORY = [
-  { id: 1, title: 'Google SWE Prep',    date: 'Today' },
-  { id: 2, title: 'Confidence Building', date: 'Yesterday' },
-  { id: 3, title: 'Resume Review',       date: 'Apr 10' },
-];
+import { Bot, Send, User, MessageSquare, Plus, Sparkles, Trash2, AlertCircle } from 'lucide-react';
+import { coachAPI } from '../api/axios';
 
 const INITIAL_MESSAGES = [
-  { role: 'assistant', content: "Hi! 👋 I reviewed your latest mock interview. You did great on technical questions — let's sharpen your behavioural answers next. What would you like to focus on today?" },
+  {
+    role: 'assistant',
+    content: "Hi! I'm IntelliCoach — your personal interview prep assistant. I can help you improve your interview performance, explain IntelliHire features, give you practice tips, and guide your career preparation. What would you like to work on today?",
+  },
 ];
 
 const QUICK_PROMPTS = [
-  { label: 'Improve confidence', text: 'How can I improve my interview confidence?' },
-  { label: 'Google SWE prep',    text: 'Prepare me for a Google SWE interview' },
-  { label: 'Review my report',   text: 'Review my latest interview report' },
-  { label: 'STAR tips',          text: 'Give me tips on the STAR method' },
+  { label: 'Improve confidence',    text: 'How can I improve my interview confidence?' },
+  { label: 'What is IntelliHire?',  text: 'What does IntelliHire do and how does it work?' },
+  { label: 'STAR method tips',      text: 'Give me tips on answering behavioral questions using the STAR method' },
+  { label: 'Boost technical score', text: 'How can I improve my technical interview score?' },
 ];
 
-const AI_RESPONSES = [
-  "Great area to work on! For confidence, try this: record yourself answering 3 questions daily — no re-takes. The playback will feel uncomfortable at first, but it trains self-awareness fast. Also, power poses before the interview genuinely work (Amy Cuddy's research). Want me to run a confidence drill with you right now?",
-  "For Google SWE, focus on: 1) LeetCode medium/hard (graphs, DP, sliding window), 2) System design — design YouTube or a URL shortener, 3) Googleyness questions. Which area should we drill first?",
-  "Your last session scored 85/100. Wins: communication (+12%), technical accuracy (85%). Growth area: system design — specifically distributed caching. I'd recommend 2 focused sessions on that this week. Want a mini system-design mock right now?",
-  "STAR tip: Always quantify your Result. Instead of 'I improved performance', say 'I reduced load time by 67% from 4s to 1.3s, increasing conversions by 12%.' Numbers create instant credibility with interviewers.",
-];
+const CHAT_HISTORY_KEY = 'intellihire_coach_history';
+
+const loadHistory = () => {
+  try {
+    return JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY) || '[]');
+  } catch {
+    return [];
+  }
+};
+
+const saveHistory = (chats) => {
+  try {
+    localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chats.slice(0, 15)));
+  } catch {}
+};
 
 export const AICoach = () => {
-  const [messages, setMessages]       = useState(INITIAL_MESSAGES);
-  const [inputValue, setInputValue]   = useState('');
-  const [isTyping, setIsTyping]       = useState(false);
-  const [activeChat, setActiveChat]   = useState(1);
-  const [responseIdx, setResponseIdx] = useState(0);
+  const [messages, setMessages]   = useState(INITIAL_MESSAGES);
+  const [inputValue, setInputValue] = useState('');
+  const [isTyping, setIsTyping]   = useState(false);
+  const [error, setError]         = useState(null);
+  const [chatHistory, setChatHistory] = useState(loadHistory);
+  const [activeChat, setActiveChat]   = useState(null);
   const bottomRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const handleSend = (text) => {
+  const saveCurrentChat = (msgs) => {
+    if (msgs.length <= 1) return;
+    const firstUserMsg = msgs.find(m => m.role === 'user');
+    if (!firstUserMsg) return;
+    const title = firstUserMsg.content.slice(0, 40) + (firstUserMsg.content.length > 40 ? '…' : '');
+    const now = new Date();
+    const dateLabel = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const newChat = { id: Date.now(), title, date: dateLabel, messages: msgs };
+    setChatHistory(prev => {
+      const updated = [newChat, ...prev.filter(c => c.id !== activeChat)].slice(0, 15);
+      saveHistory(updated);
+      return updated;
+    });
+    setActiveChat(newChat.id);
+  };
+
+  const handleSend = async (text) => {
     const t = (text || inputValue).trim();
     if (!t || isTyping) return;
-    setMessages(p => [...p, { role: 'user', content: t }]);
+    setError(null);
+
+    const userMsg = { role: 'user', content: t };
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setInputValue('');
     setIsTyping(true);
-    setTimeout(() => {
-      setMessages(p => [...p, { role: 'assistant', content: AI_RESPONSES[responseIdx % AI_RESPONSES.length] }]);
-      setResponseIdx(i => i + 1);
+
+    try {
+      const res = await coachAPI.chat(updatedMessages.map(m => ({ role: m.role, content: m.content })));
+      const reply = { role: 'assistant', content: res.data.response };
+      const finalMessages = [...updatedMessages, reply];
+      setMessages(finalMessages);
+      saveCurrentChat(finalMessages);
+    } catch (err) {
+      setError('Could not reach IntelliCoach. Please check your connection and try again.');
+      setMessages(updatedMessages);
+    } finally {
       setIsTyping(false);
-    }, 1100 + Math.random() * 500);
+    }
+  };
+
+  const handleNewChat = () => {
+    setMessages(INITIAL_MESSAGES);
+    setActiveChat(null);
+    setInputValue('');
+    setError(null);
+  };
+
+  const handleLoadChat = (chat) => {
+    setMessages(chat.messages);
+    setActiveChat(chat.id);
+    setError(null);
+  };
+
+  const handleDeleteChat = (e, chatId) => {
+    e.stopPropagation();
+    setChatHistory(prev => {
+      const updated = prev.filter(c => c.id !== chatId);
+      saveHistory(updated);
+      return updated;
+    });
+    if (activeChat === chatId) handleNewChat();
   };
 
   return (
@@ -59,24 +118,26 @@ export const AICoach = () => {
 
         {/* ── Chat History Sidebar ── */}
         <GlassCard hover={false} className="w-full md:w-60 !p-3 flex flex-col gap-2 shrink-0">
-          {/* New chat button */}
           <button
-            onClick={() => { setMessages(INITIAL_MESSAGES); setActiveChat(null); setResponseIdx(0); }}
+            onClick={handleNewChat}
             className="flex items-center justify-center gap-2 w-full py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl font-semibold text-sm hover:from-primary-600 hover:to-primary-700 shadow-sm shadow-primary-500/20 transition-all duration-200"
           >
             <Plus className="w-4 h-4" />
             New Chat
           </button>
 
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mt-1">
-            Recent
-          </p>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mt-1">Recent</p>
 
           <div className="flex-1 overflow-y-auto space-y-0.5 custom-scrollbar">
-            {CHAT_HISTORY.map(chat => (
+            {chatHistory.length === 0 && (
+              <p className="text-[11px] text-slate-400 px-2 py-3 text-center leading-relaxed">
+                Your conversations will appear here
+              </p>
+            )}
+            {chatHistory.map(chat => (
               <button
                 key={chat.id}
-                onClick={() => setActiveChat(chat.id)}
+                onClick={() => handleLoadChat(chat)}
                 className={`w-full flex items-center gap-2.5 p-2.5 rounded-xl text-left group transition-all ${
                   activeChat === chat.id
                     ? 'bg-primary-50 text-primary-700 border border-primary-200/60'
@@ -88,7 +149,10 @@ export const AICoach = () => {
                   <p className="text-xs font-semibold truncate leading-snug">{chat.title}</p>
                   <p className="text-[10px] text-slate-400">{chat.date}</p>
                 </div>
-                <Trash2 className="w-3 h-3 opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-400 transition-all" />
+                <Trash2
+                  onClick={(e) => handleDeleteChat(e, chat.id)}
+                  className="w-3 h-3 opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-400 transition-all shrink-0"
+                />
               </button>
             ))}
           </div>
@@ -96,7 +160,6 @@ export const AICoach = () => {
 
         {/* ── Main Chat Panel ── */}
         <GlassCard hover={false} className="flex-1 flex flex-col !p-0 overflow-hidden relative">
-          {/* Subtle tint */}
           <div className="absolute inset-0 bg-primary-50/8 pointer-events-none" />
 
           {/* Header */}
@@ -120,10 +183,9 @@ export const AICoach = () => {
                 key={i}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.28 }}
+                transition={{ duration: 0.25 }}
                 className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
               >
-                {/* Avatar */}
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
                   msg.role === 'user'
                     ? 'bg-slate-100 border border-slate-200'
@@ -134,9 +196,7 @@ export const AICoach = () => {
                     : <Bot  className="w-3.5 h-3.5 text-white" />
                   }
                 </div>
-
-                {/* Bubble */}
-                <div className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                <div className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
                   msg.role === 'user'
                     ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-tr-sm shadow-md shadow-primary-500/15'
                     : 'bg-white/85 border border-[#D6E7F7]/90 text-slate-800 rounded-tl-sm shadow-sm'
@@ -172,10 +232,25 @@ export const AICoach = () => {
               )}
             </AnimatePresence>
 
+            {/* Error banner */}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs"
+                >
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <div ref={bottomRef} />
           </div>
 
-          {/* Quick prompts */}
+          {/* Quick prompts — shown only on fresh chat */}
           {messages.length === 1 && (
             <div className="px-5 pb-3 flex flex-wrap gap-2 relative z-10">
               {QUICK_PROMPTS.map((p, i) => (
@@ -201,9 +276,10 @@ export const AICoach = () => {
                 type="text"
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleSend()}
-                placeholder="Ask for feedback, tips, or start a mock interview…"
+                onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()}
+                placeholder="Ask for feedback, tips, or questions about IntelliHire…"
                 className="w-full glass-input pl-4 pr-12 py-3 rounded-xl text-sm text-slate-900 placeholder:text-slate-400"
+                disabled={isTyping}
               />
               <button
                 onClick={() => handleSend()}

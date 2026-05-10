@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { PageTransition } from '../components/layout/PageTransition';
 import { GlassCard } from '../components/ui/GlassCard';
 import { AnimatedButton } from '../components/ui/AnimatedButton';
@@ -83,62 +83,68 @@ export const Dashboard = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  /* ── Derived data ── */
-  const completed = sessions.filter(s => s.status === 'completed');
-  const inProgress = sessions.filter(s => s.status !== 'completed');
+  /* ── Derived data — all memoised so they only recompute when sessions changes ── */
+  const completed = useMemo(() => sessions.filter(s => s.status === 'completed'), [sessions]);
 
-  const avgScore = completed.length > 0
-    ? Math.round(completed.reduce((sum, s) => sum + (s.final_score || 0), 0) / completed.length)
-    : 0;
+  const avgScore = useMemo(() =>
+    completed.length > 0
+      ? Math.round(completed.reduce((sum, s) => sum + (s.final_score || 0), 0) / completed.length)
+      : 0,
+  [completed]);
 
-  const bestScore = completed.length > 0
-    ? Math.round(Math.max(...completed.map(s => s.final_score || 0)))
-    : 0;
+  const bestScore = useMemo(() =>
+    completed.length > 0
+      ? Math.round(Math.max(...completed.map(s => s.final_score || 0)))
+      : 0,
+  [completed]);
 
   /* Trend: compare last-3 avg vs prev-3 avg */
-  const trend = (() => {
+  const trend = useMemo(() => {
     if (completed.length < 4) return null;
     const sorted = [...completed].sort((a, b) => new Date(b.started_at || b.created_at) - new Date(a.started_at || a.created_at));
     const recent = sorted.slice(0, 3).reduce((s, x) => s + (x.final_score || 0), 0) / 3;
     const prev   = sorted.slice(3, 6).reduce((s, x) => s + (x.final_score || 0), 0) / Math.min(sorted.slice(3, 6).length, 3);
     return Math.round(recent - prev);
-  })();
+  }, [completed]);
 
-  /* Score trend chart data */
-  const trendData = [...completed]
-    .sort((a, b) => new Date(a.started_at || a.created_at) - new Date(b.started_at || b.created_at))
-    .slice(-10)
-    .map((s, i) => ({
-      name: `#${i + 1}`,
-      score: Math.round(s.final_score || 0),
-    }));
+  /* Score trend chart */
+  const trendData = useMemo(() =>
+    [...completed]
+      .sort((a, b) => new Date(a.started_at || a.created_at) - new Date(b.started_at || b.created_at))
+      .slice(-10)
+      .map((s, i) => ({ name: `#${i + 1}`, score: Math.round(s.final_score || 0) })),
+  [completed]);
 
   /* Grade distribution donut */
-  const gradeData = Object.entries(
-    completed.reduce((acc, s) => {
-      const g = gradeFromScore(s.final_score || 0);
-      acc[g] = (acc[g] || 0) + 1;
-      return acc;
-    }, {})
-  )
-    .map(([name, value]) => ({ name: `Grade ${name}`, value, color: GRADE_COLORS[name] }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const gradeData = useMemo(() =>
+    Object.entries(
+      completed.reduce((acc, s) => {
+        const g = gradeFromScore(s.final_score || 0);
+        acc[g] = (acc[g] || 0) + 1;
+        return acc;
+      }, {})
+    )
+      .map(([name, value]) => ({ name: `Grade ${name}`, value, color: GRADE_COLORS[name] }))
+      .sort((a, b) => a.name.localeCompare(b.name)),
+  [completed]);
 
   /* Domain bar chart */
-  const domainData = Object.entries(
-    sessions.reduce((acc, s) => {
-      const d = (s.domain || 'General').replace('Development', 'Dev').replace('Engineering', 'Eng');
-      acc[d] = (acc[d] || 0) + 1;
-      return acc;
-    }, {})
-  )
-    .map(([name, count], i) => ({ name, count, fill: DOMAIN_COLORS[i % DOMAIN_COLORS.length] }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 5);
+  const domainData = useMemo(() =>
+    Object.entries(
+      sessions.reduce((acc, s) => {
+        const d = (s.domain || 'General').replace('Development', 'Dev').replace('Engineering', 'Eng');
+        acc[d] = (acc[d] || 0) + 1;
+        return acc;
+      }, {})
+    )
+      .map(([name, count], i) => ({ name, count, fill: DOMAIN_COLORS[i % DOMAIN_COLORS.length] }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5),
+  [sessions]);
 
-  const completionRate = sessions.length > 0
-    ? Math.round((completed.length / sessions.length) * 100)
-    : 0;
+  const completionRate = useMemo(() =>
+    sessions.length > 0 ? Math.round((completed.length / sessions.length) * 100) : 0,
+  [sessions, completed]);
 
   const hasChartData = completed.length >= 2;
 

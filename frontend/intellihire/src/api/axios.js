@@ -115,6 +115,11 @@ export const reportAPI = {
     api.get(`/report/${sessionId}/pdf`, { responseType: 'blob' }),
 };
 
+// ─── AI Coach ───────────────────────────────────────────
+export const coachAPI = {
+  chat: (messages) => api.post('/coach/chat', { messages }),
+};
+
 // ─── Personalized Interview ─────────────────────────────
 export const personalizedAPI = {
   uploadAndGenerate: (formData) =>

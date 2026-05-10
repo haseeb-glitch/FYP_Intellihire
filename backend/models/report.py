@@ -97,7 +97,7 @@ class EvaluationScore(db.Document):
                 'composure': self.stress_composure,
                 'eye_contact': self.stress_eye_contact,
                 'vocal_steadiness': self.stress_vocal_steadiness,
-                'text_confidence': self.stress_text_confidence,
+                'confidence': self.stress_text_confidence,
                 'filler_words': self.stress_filler_words,
                 'response_coherence': self.stress_response_coherence,
                 'pressure_handling': self.stress_pressure_handling,

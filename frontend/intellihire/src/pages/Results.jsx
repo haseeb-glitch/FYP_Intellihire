@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { PageTransition } from '../components/layout/PageTransition';
 import { GlassCard } from '../components/ui/GlassCard';
 import { AnimatedButton } from '../components/ui/AnimatedButton';
@@ -108,11 +108,12 @@ const MetricBar = ({ label, value, max = 10, color = 'primary', icon: Icon, dela
 };
 
 /* ─── AgentDetailCard ─── */
-const AgentDetailCard = ({ agentType, scores, detailed, feedback }) => {
+const AgentDetailCard = ({ agentType, scores, detailed, feedback, metricsOverride }) => {
   const config = agentConfig[agentType];
   if (!config) return null;
   const Icon = config.icon;
   const overallScore = scores?.overall || 0;
+  const metrics = metricsOverride || config.metrics;
 
   return (
     <GlassCard className="!p-0 overflow-hidden" hover={false}>
@@ -133,7 +134,7 @@ const AgentDetailCard = ({ agentType, scores, detailed, feedback }) => {
       </div>
 
       <div className="px-5 py-4 space-y-3.5">
-        {config.metrics.map((metric, i) => {
+        {metrics.map((metric, i) => {
           const value = detailed?.[metric.key] || scores?.[metric.key] || 0;
           return (
             <MetricBar key={metric.key} label={metric.label} value={value} icon={metric.icon} color={config.color} delay={0.07 * i} />
@@ -227,28 +228,43 @@ export const Results = () => {
   const modeLabel = { hr: 'HR Interview', technical: 'Technical Interview', stress: 'Stress Interview', mixed: 'Full Agentic Interview' }[interviewMode] || interviewMode;
   const modeBadge = { hr: 'bg-blue-50 text-blue-700 border-blue-200', technical: 'bg-violet-50 text-violet-700 border-violet-200', stress: 'bg-amber-50 text-amber-700 border-amber-200', mixed: 'bg-primary-50 text-primary-700 border-primary-200' }[interviewMode] || 'bg-primary-50 text-primary-700 border-primary-200';
 
+  /* Stress metrics filtered by answer mode */
+  const answerMode = data?.answer_mode || 'text';
+  const stressMetrics = useMemo(() => [
+    { key: 'composure',         label: 'Composure',         icon: Activity },
+    { key: 'confidence',        label: 'Confidence',        icon: Award },
+    ...(answerMode !== 'text'  ? [{ key: 'vocal_steadiness', label: 'Vocal Steadiness', icon: Volume2 }] : []),
+    ...(answerMode === 'video' ? [{ key: 'eye_contact',      label: 'Eye Contact',      icon: Eye      }] : []),
+    { key: 'pressure_handling', label: 'Pressure Handling', icon: Zap },
+  ], [answerMode]);
+
   /* Radar */
-  const radarData = [];
-  if (agentsUsed.includes('hr') && hrScores) {
-    radarData.push({ skill: 'Clarity', value: hrScores.clarity || 0 });
-    radarData.push({ skill: 'Professionalism', value: hrScores.professionalism || 0 });
-  }
-  if (agentsUsed.includes('technical') && techScores) {
-    radarData.push({ skill: 'Correctness', value: techScores.correctness || 0 });
-    radarData.push({ skill: 'Depth', value: techScores.depth || 0 });
-  }
-  if (agentsUsed.includes('stress') && stressScores) {
-    radarData.push({ skill: 'Composure', value: stressScores.composure || 0 });
-    radarData.push({ skill: 'Confidence', value: stressScores.confidence || 0 });
-  }
+  const radarData = useMemo(() => {
+    const points = [];
+    if (agentsUsed.includes('hr') && hrScores) {
+      points.push({ skill: 'Clarity',        value: hrScores.clarity         || 0 });
+      points.push({ skill: 'Professionalism', value: hrScores.professionalism || 0 });
+    }
+    if (agentsUsed.includes('technical') && techScores) {
+      points.push({ skill: 'Correctness', value: techScores.correctness || 0 });
+      points.push({ skill: 'Depth',       value: techScores.depth       || 0 });
+    }
+    if (agentsUsed.includes('stress') && stressScores) {
+      const sd = detailedAnalysis?.stress || {};
+      points.push({ skill: 'Composure',        value: sd.composure         || stressScores.composure         || 0 });
+      points.push({ skill: 'Confidence',        value: sd.confidence        || stressScores.confidence        || 0 });
+      points.push({ skill: 'Pressure Handling', value: sd.pressure_handling || stressScores.pressure_handling || 0 });
+    }
+    return points;
+  }, [agentsUsed, hrScores, techScores, stressScores, detailedAnalysis]);
 
   /* Hero stats strip */
-  const heroStats = [
-    { label: 'Avg Response',   value: `${Math.round(avgResponseTime)}s`,                                                        icon: Clock,        iconColor: 'text-blue-500',   bg: 'bg-blue-50'   },
-    { label: 'Filler Words',   value: totalFillerWords,                                                                          icon: MessageSquare,iconColor: 'text-amber-500',  bg: 'bg-amber-50'  },
-    { label: 'Trend',          value: performanceTrend.charAt(0).toUpperCase() + performanceTrend.slice(1),                      icon: TrendingUp,   iconColor: 'text-emerald-500',bg: 'bg-emerald-50'},
-    { label: 'Max Difficulty', value: finalDifficulty.charAt(0).toUpperCase() + finalDifficulty.slice(1),                       icon: Target,       iconColor: 'text-violet-500', bg: 'bg-violet-50' },
-  ];
+  const heroStats = useMemo(() => [
+    { label: 'Avg Response',   value: `${Math.round(avgResponseTime)}s`,                                       icon: Clock,        iconColor: 'text-blue-500',   bg: 'bg-blue-50'   },
+    { label: 'Filler Words',   value: totalFillerWords,                                                         icon: MessageSquare,iconColor: 'text-amber-500',  bg: 'bg-amber-50'  },
+    { label: 'Trend',          value: performanceTrend.charAt(0).toUpperCase() + performanceTrend.slice(1),     icon: TrendingUp,   iconColor: 'text-emerald-500',bg: 'bg-emerald-50'},
+    { label: 'Max Difficulty', value: finalDifficulty.charAt(0).toUpperCase() + finalDifficulty.slice(1),      icon: Target,       iconColor: 'text-violet-500', bg: 'bg-violet-50' },
+  ], [avgResponseTime, totalFillerWords, performanceTrend, finalDifficulty]);
 
   return (
     <PageTransition className="pt-8 pb-16 px-5 sm:px-7 lg:px-8">
@@ -443,7 +459,7 @@ export const Results = () => {
               <AgentDetailCard agentType="technical" scores={techScores} detailed={detailedAnalysis.technical} feedback={eval_.feedbacks?.technical} />
             )}
             {agentsUsed.includes('stress') && (
-              <AgentDetailCard agentType="stress" scores={stressScores} detailed={detailedAnalysis.stress} feedback={eval_.feedbacks?.stress} />
+              <AgentDetailCard agentType="stress" scores={stressScores} detailed={detailedAnalysis.stress} feedback={eval_.feedbacks?.stress} metricsOverride={stressMetrics} />
             )}
           </div>
         </div>
