@@ -1,0 +1,275 @@
+{
+  "category": "hr",
+  "questions": {
+    "easy": [
+      {
+        "id": "hr_e_001",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Tell me about yourself.",
+        "expected_keywords": ["background", "experience", "education", "passion"],
+        "ideal_answer_hint": "Provide a brief summary of your professional journey, highlighting key achievements and what led you to this role.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_002",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "What are your greatest strengths and weaknesses?",
+        "expected_keywords": ["strength", "weakness", "improvement", "self-awareness"],
+        "ideal_answer_hint": "Focus on strengths relevant to the job and a genuine weakness you are actively working to improve.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_003",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Why are you interested in this role?",
+        "expected_keywords": ["motivation", "fit", "skills", "company"],
+        "ideal_answer_hint": "Connect your skills and values with the company's mission and the specific requirements of the position.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_004",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Describe your work style.",
+        "expected_keywords": ["collaborative", "independent", "organized", "detail-oriented"],
+        "ideal_answer_hint": "Mention how you manage tasks, collaborate with others, and stay productive.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_005",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "How do you handle deadlines?",
+        "expected_keywords": ["prioritization", "time management", "pressure", "planning"],
+        "ideal_answer_hint": "Explain your approach to prioritizing tasks and ensuring timely delivery under pressure.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_006",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Tell me about your experience with team collaboration.",
+        "expected_keywords": ["collaboration", "support", "communication", "teamwork"],
+        "ideal_answer_hint": "Share an example of how you worked effectively with others to achieve a common goal.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_007",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "What is your communication style?",
+        "expected_keywords": ["clear", "concise", "active listening", "feedback"],
+        "ideal_answer_hint": "Describe how you ensure clarity and open communication with colleagues and stakeholders.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_008",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "How do you handle receiving criticism?",
+        "expected_keywords": ["feedback", "growth", "positivity", "learning"],
+        "ideal_answer_hint": "Emphasize your willingness to learn and grow from constructive feedback.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_009",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "What are your short-term professional goals?",
+        "expected_keywords": ["growth", "skills", "contribution", "learning"],
+        "ideal_answer_hint": "Discuss immediate milestones you want to achieve in the next 1-2 years.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_e_010",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "What are your long-term professional goals?",
+        "expected_keywords": ["career path", "leadership", "impact", "vision"],
+        "ideal_answer_hint": "Outline your aspirations for the next 5+ years and how they align with your career path.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      }
+    ],
+    "medium": [
+      {
+        "id": "hr_m_001",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Describe a time you had a conflict with a colleague and how you resolved it.",
+        "expected_keywords": ["conflict", "resolution", "communication", "professionalism", "mediation"],
+        "ideal_answer_hint": "Use the STAR method to describe the situation, task, action taken, and the positive result.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_m_002",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Tell me about a difficult project you worked on. How did you manage it?",
+        "expected_keywords": ["challenges", "perseverance", "strategy", "outcome"],
+        "ideal_answer_hint": "Highlight the obstacles you faced and the specific steps you took to overcome them.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_m_003",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Give an example of a time you demonstrated leadership.",
+        "expected_keywords": ["initiative", "mentorship", "guidance", "responsibility"],
+        "ideal_answer_hint": "Leadership isn't just about titles; show how you took charge or influenced others positively.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_m_004",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Tell me about a time you failed. What did you learn?",
+        "expected_keywords": ["failure", "reflection", "accountability", "growth"],
+        "ideal_answer_hint": "Be honest about the failure, take ownership, and focus on the lessons learned and subsequent improvements.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_m_005",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Describe a situation where you had to work under significant pressure.",
+        "expected_keywords": ["pressure", "composure", "focus", "quality"],
+        "ideal_answer_hint": "Show how you maintained your performance and made sound decisions despite the stress.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_m_006",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Have you ever disagreed with a manager? How did you handle it?",
+        "expected_keywords": ["disagreement", "professionalism", "dialogue", "compromise"],
+        "ideal_answer_hint": "Focus on the professional manner in which you approached the situation and how you reached a resolution.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_m_007",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "How do you manage multiple competing priorities?",
+        "expected_keywords": ["multi-tasking", "prioritization", "tools", "flexibility"],
+        "ideal_answer_hint": "Explain your logic for deciding what comes first and how you stay organized.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_m_008",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "How do you motivate others during a project?",
+        "expected_keywords": ["motivation", "encouragement", "clarity", "recognition"],
+        "ideal_answer_hint": "Discuss how you build morale and keep team members focused on the goal.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      }
+    ],
+    "hard": [
+      {
+        "id": "hr_h_001",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Where do you see your career in 5 years? Provide specific milestones.",
+        "expected_keywords": ["vision", "milestones", "strategy", "alignment"],
+        "ideal_answer_hint": "Provide a detailed roadmap showing ambition and how this company facilitates that growth.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_h_002",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Describe a time you had to turn around a failing project or team.",
+        "expected_keywords": ["turnaround", "analysis", "intervention", "success"],
+        "ideal_answer_hint": "Detail the root cause analysis you performed and the systemic changes you implemented.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_h_003",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Tell me about an ethical dilemma you faced at work. How did you resolve it?",
+        "expected_keywords": ["ethics", "integrity", "values", "principles"],
+        "ideal_answer_hint": "Explain the conflict between values and how you adhered to professional integrity.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_h_004",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "Describe a time you had to negotiate with senior stakeholders who disagreed with you.",
+        "expected_keywords": ["negotiation", "persuasion", "stakeholders", "diplomacy"],
+        "ideal_answer_hint": "Highlight your ability to present cases effectively and find common ground with leadership.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_h_005",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "How have you used data to change someone's mind about a significant decision?",
+        "expected_keywords": ["data-driven", "evidence", "analysis", "influence"],
+        "ideal_answer_hint": "Focus on the data source, your analysis, and the communication strategy used to shift perspectives.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "hr_h_006",
+        "type": "hr",
+        "subtype": "behavioural",
+        "question": "How do you handle large-scale organizational change that you didn't agree with?",
+        "expected_keywords": ["change management", "adaptability", "resilience", "alignment"],
+        "ideal_answer_hint": "Show professional maturity in adapting to shift while maintaining productivity and helping others adjust.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      }
+    ]
+  }
+}

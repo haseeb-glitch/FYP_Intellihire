@@ -1,0 +1,276 @@
+{
+  "category": "technical",
+  "domain_defaults": ["Software Engineer"],
+  "questions": {
+    "easy": [
+      {
+        "id": "tech_e_001",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is the difference between a list and a tuple in Python?",
+        "expected_keywords": ["mutable", "immutable", "performance", "syntax"],
+        "ideal_answer_hint": "Explain that lists are mutable and defined with square brackets, while tuples are immutable and defined with parentheses.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_002",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is Object-Oriented Programming (OOP)?",
+        "expected_keywords": ["classes", "objects", "encapsulation", "inheritance", "polymorphism", "abstraction"],
+        "ideal_answer_hint": "Define OOP as a paradigm based on 'objects' which contain data and methods. Mention the four pillars.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_003",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is Git and why is it used?",
+        "expected_keywords": ["version control", "distributed", "history", "branches", "collaboration"],
+        "ideal_answer_hint": "Explain that Git is a distributed version control system used to track changes in source code and enable collaboration.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_004",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "Explain the difference between HTTP and HTTPS.",
+        "expected_keywords": ["secure", "encryption", "SSL", "TLS", "port 443", "port 80"],
+        "ideal_answer_hint": "HTTPS is the secure version of HTTP, using SSL/TLS encryption to protect data in transit.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_005",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is a REST API?",
+        "expected_keywords": ["stateless", "resources", "endpoints", "GET", "POST", "JSON"],
+        "ideal_answer_hint": "Representational State Transfer is an architectural style for providing standards between computer systems on the web.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_006",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is a database index and how does it work?",
+        "expected_keywords": ["performance", "search speed", "B-tree", "lookup"],
+        "ideal_answer_hint": "An index is a data structure that improves the speed of data retrieval operations on a database table.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_007",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is recursion?",
+        "expected_keywords": ["self-reference", "base case", "stack", "function"],
+        "ideal_answer_hint": "Recursion is a process in which a function calls itself directly or indirectly. Requires a base case to stop.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_008",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is the Big O time complexity of a linear search?",
+        "expected_keywords": ["O(n)", "linear", "worst-case", "array", "scan"],
+        "ideal_answer_hint": "Linear search has a time complexity of O(n) because each element is checked at most once.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_009",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is a hash table?",
+        "expected_keywords": ["key-value", "hash function", "constant time", "collision"],
+        "ideal_answer_hint": "A data structure that maps keys to values using a hash function to compute an index in an array.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_e_010",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "Explain the MVC pattern.",
+        "expected_keywords": ["Model", "View", "Controller", "separation of concerns"],
+        "ideal_answer_hint": "Model-View-Controller is an architectural pattern that separates an application into three main logical components.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      }
+    ],
+    "medium": [
+      {
+        "id": "tech_m_001",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "Explain the different types of SQL JOINs with examples.",
+        "expected_keywords": ["INNER", "LEFT", "RIGHT", "FULL", "OUTER", "intersection"],
+        "ideal_answer_hint": "Discuss INNER, LEFT, RIGHT, and FULL JOINs and how they handle unmatched rows.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_m_002",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "Explain time complexity O(n log n) and give an example of an algorithm that uses it.",
+        "expected_keywords": ["logarithmic", "Merge Sort", "Quick Sort", "divide and conquer"],
+        "ideal_answer_hint": "O(n log n) is common in efficient sorting algorithms like Merge Sort. It represents linearithmic growth.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_m_003",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What are the main differences between REST and GraphQL?",
+        "expected_keywords": ["overfetching", "underfetching", "schema", "endpoints", "query language"],
+        "ideal_answer_hint": "GraphQL allows clients to request exactly what they need, solving overfetching/underfetching issues common in REST.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_m_004",
+        "type": "technical",
+        "subtype": "coding",
+        "question": "Write a Python implementation of Binary Search.",
+        "expected_keywords": ["def", "while", "low", "high", "mid", "return"],
+        "ideal_answer_hint": "Implement a binary search function that takes a sorted list and a target value.",
+        "time_limit_seconds": 300,
+        "requires_code": true,
+        "language": "python"
+      },
+      {
+        "id": "tech_m_005",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "Explain the SOLID principles.",
+        "expected_keywords": ["Single responsibility", "Open-closed", "Liskov substitution", "Interface segregation", "Dependency inversion"],
+        "ideal_answer_hint": "SOLID is an acronym for five design principles intended to make software designs more understandable, flexible, and maintainable.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_m_006",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is the difference between GROUP BY and HAVING in SQL?",
+        "expected_keywords": ["aggregation", "filtering", "WHERE clause", "results"],
+        "ideal_answer_hint": "GROUP BY groups rows with the same values; HAVING filters groups based on aggregate results.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_m_007",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "What is a race condition in concurrent programming?",
+        "expected_keywords": ["multi-threading", "timing", "shared resource", "deadlock", "mutex"],
+        "ideal_answer_hint": "A race condition occurs when the behavior of software depends on the sequence or timing of uncontrollable events.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_m_008",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "Explain the pub/sub pattern.",
+        "expected_keywords": ["publisher", "subscriber", "broker", "decoupling", "events"],
+        "ideal_answer_hint": "Publish-subscribe is a messaging pattern where senders don't target specific receivers, but categorize messages into classes.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      }
+    ],
+    "hard": [
+      {
+        "id": "tech_h_001",
+        "type": "technical",
+        "subtype": "situational",
+        "question": "How would you design a URL shortener system like bit.ly?",
+        "expected_keywords": ["hashing", "base62", "database", "redirection", "scalability", "caching"],
+        "ideal_answer_hint": "Discuss requirements, API endpoints, hashing algorithms, and storage strategy (NoSQL vs SQL).",
+        "time_limit_seconds": 360,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_h_002",
+        "type": "technical",
+        "subtype": "coding",
+        "question": "Implement the Merge Sort algorithm in Python.",
+        "expected_keywords": ["def", "merge", "divide", "conquer", "recursion"],
+        "ideal_answer_hint": "Define a merge sort function that recursively splits the list and merges the sorted halves.",
+        "time_limit_seconds": 600,
+        "requires_code": true,
+        "language": "python"
+      },
+      {
+        "id": "tech_h_003",
+        "type": "technical",
+        "subtype": "situational",
+        "question": "Design a rate limiter for a public API.",
+        "expected_keywords": ["Token Bucket", "Leaky Bucket", "Fixed Window", "Sliding Window", "Redis"],
+        "ideal_answer_hint": "Discuss different algorithms (e.g., Token Bucket) and architectural placement (API Gateway, middleware).",
+        "time_limit_seconds": 360,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_h_004",
+        "type": "technical",
+        "subtype": "conceptual",
+        "question": "Explain the CAP theorem and its trade-offs.",
+        "expected_keywords": ["Consistency", "Availability", "Partition Tolerance", "Distributed systems"],
+        "ideal_answer_hint": "States that a distributed data store can only provide two of the three guarantees. Discuss CP, AP, and CA systems.",
+        "time_limit_seconds": 360,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_h_005",
+        "type": "technical",
+        "subtype": "situational",
+        "question": "How would you design a real-time notification system?",
+        "expected_keywords": ["WebSockets", "Push notifications", "Pub/Sub", "Message Queues", "Scalability"],
+        "ideal_answer_hint": "Discuss how to handle millions of connections, message delivery guarantees, and cross-platform support.",
+        "time_limit_seconds": 360,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "tech_h_006",
+        "type": "technical",
+        "subtype": "coding",
+        "question": "Write an implementation of an LRU Cache in Python.",
+        "expected_keywords": ["OrderedDict", "get", "put", "capacity", "evict"],
+        "ideal_answer_hint": "Implement an LRU cache with O(1) time complexity for both get and put operations.",
+        "time_limit_seconds": 600,
+        "requires_code": true,
+        "language": "python"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "category": "technical",
+  "weights": {
+    "correctness": 0.35,
+    "depth": 0.25,
+    "efficiency": 0.25,
+    "communication": 0.15
+  },
+  "performance_levels": {
+    "excellent": {"min": 8, "max": 10, "label": "Excellent"},
+    "good": {"min": 6, "max": 7, "label": "Good"},
+    "average": {"min": 4, "max": 5, "label": "Average"},
+    "poor": {"min": 0, "max": 3, "label": "Poor"}
+  }
+}

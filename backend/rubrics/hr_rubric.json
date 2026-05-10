@@ -1,0 +1,15 @@
+{
+  "category": "hr",
+  "weights": {
+    "clarity": 0.25,
+    "relevance": 0.25,
+    "professionalism": 0.25,
+    "star_method": 0.25
+  },
+  "performance_levels": {
+    "excellent": {"min": 8, "max": 10, "label": "Excellent"},
+    "good": {"min": 6, "max": 7, "label": "Good"},
+    "average": {"min": 4, "max": 5, "label": "Average"},
+    "poor": {"min": 0, "max": 3, "label": "Poor"}
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "category": "stress",
+  "questions": {
+    "easy": [
+      {
+        "id": "stress_e_001",
+        "type": "stress",
+        "subtype": "behavioural",
+        "question": "How do you handle multiple tight deadlines simultaneously?",
+        "expected_keywords": ["prioritization", "time-management", "stress", "planning"],
+        "ideal_answer_hint": "Explain how you prioritize tasks based on impact and urgency while staying calm.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_e_002",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "What do you do when you don't know the answer to a critical question during a meeting?",
+        "expected_keywords": ["honesty", "transparency", "follow-up", "resourcefulness"],
+        "ideal_answer_hint": "Be honest but committed to finding the answer and following up quickly.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_e_003",
+        "type": "stress",
+        "subtype": "behavioural",
+        "question": "Describe a time you worked significantly outside your comfort zone. How did you cope?",
+        "expected_keywords": ["adaptability", "learning", "growth", "challenge"],
+        "ideal_answer_hint": "Focus on your willingness to learn and how you managed the initial stress of the unknown.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_e_004",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "How do you respond when the requirements for your task change at the last minute?",
+        "expected_keywords": ["flexibility", "agility", "pivoting", "communication"],
+        "ideal_answer_hint": "Show how you quickly adapt and communicate dependencies or impact on delivery.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_e_005",
+        "type": "stress",
+        "subtype": "behavioural",
+        "question": "Tell me about a time you had to deliver a task with incomplete information.",
+        "expected_keywords": ["assumptions", "validation", "proactive", "clarity"],
+        "ideal_answer_hint": "Explain how you made educated guesses, sought clarification where possible, and mitigated risks.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_e_006",
+        "type": "stress",
+        "subtype": "behavioural",
+        "question": "What is your strategy for staying focused in a high-pressure environment?",
+        "expected_keywords": ["focus", "concentration", "breaks", "organization"],
+        "ideal_answer_hint": "Mention specific techniques like deep work, blocking distractions, or regular short breaks.",
+        "time_limit_seconds": 120,
+        "requires_code": false,
+        "language": null
+      }
+    ],
+    "medium": [
+      {
+        "id": "stress_m_001",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "Your manager gives you an impossible deadline. How do you handle it?",
+        "expected_keywords": ["negotiation", "feasibility", "data-driven", "scope"],
+        "ideal_answer_hint": "Assess the requirements, provide a realistic estimate, and negotiate scope or resources.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_m_002",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "A teammate is not pulling their weight on a critical project. How do you address it?",
+        "expected_keywords": ["empathy", "direct communication", "support", "escalation"],
+        "ideal_answer_hint": "Have a private conversation first to understand the situation, then offer support or escalate if necessary.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_m_003",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "You discover a critical bug in production 1 hour before a major client presentation. What is your move?",
+        "expected_keywords": ["urgency", "patch", "rollback", "communication", "contingency"],
+        "ideal_answer_hint": "Prioritize direct communication with stakeholders, propose a quick fix or rollback, and manage expectations.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_m_004",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "You have inadvertently deleted critical data that wasn't backed up properly. What now?",
+        "expected_keywords": ["accountability", "recovery", "incident-management", "learning"],
+        "ideal_answer_hint": "Immediate escalation, full accountability, working on recovery alternatives, and preventing future occurrences.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_m_005",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "A client is shouting at you over the phone about a delay you didn't cause. How do you respond?",
+        "expected_keywords": ["patience", "listening", "empathy", "professionalism"],
+        "ideal_answer_hint": "Listen without interrupting, empathize with their frustration, and steer the conversation towards a solution.",
+        "time_limit_seconds": 180,
+        "requires_code": false,
+        "language": null
+      }
+    ],
+    "hard": [
+      {
+        "id": "stress_h_001",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "You are leading a critical project and half your team quits unexpectedly. How do you save the project?",
+        "expected_keywords": ["crisis-leadership", "resource-allocation", "scope-reduction", "re-planning"],
+        "ideal_answer_hint": "Re-evaluate goals, prioritize core deliverables, motivate remaining staff, and seek temporary resources.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_h_002",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "You must deliver news of a significant project failure to the board or a senior executive. How do you prepare?",
+        "expected_keywords": ["transparency", "accountability", "root-cause", "remediation"],
+        "ideal_answer_hint": "Be direct, own the failure, present the root cause, and follow up with a concrete recovery plan.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_h_003",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "You are publicly blamed for a massive failure that was actually caused by your manager. What is your response?",
+        "expected_keywords": ["integrity", "professionalism", "documentation", "mediation"],
+        "ideal_answer_hint": "Maintain professional decorum in public, then seek a private meeting with evidence to clarify the facts.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      },
+      {
+        "id": "stress_h_004",
+        "type": "stress",
+        "subtype": "situational",
+        "question": "The company's survival depends on a feature you are building, but the codebase is a mess and time is up. What's the plan?",
+        "expected_keywords": ["triage", "MVP", "debt", "risk-mitigation"],
+        "ideal_answer_hint": "Focused triage of essentials, shipping a stable MVP, and planning for immediate refactoring post-deployment.",
+        "time_limit_seconds": 240,
+        "requires_code": false,
+        "language": null
+      }
+    ]
+  }
+}

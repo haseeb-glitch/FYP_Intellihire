@@ -1,0 +1,16 @@
+{
+  "category": "stress",
+  "weights": {
+    "composure": 0.3,
+    "confidence": 0.3,
+    "stress_management": 0.2,
+    "eye_contact": 0.1,
+    "vocal_steadiness": 0.1
+  },
+  "performance_levels": {
+    "excellent": {"min": 8, "max": 10, "label": "Excellent"},
+    "good": {"min": 6, "max": 7, "label": "Good"},
+    "average": {"min": 4, "max": 5, "label": "Average"},
+    "poor": {"min": 0, "max": 3, "label": "Poor"}
+  }
+}
