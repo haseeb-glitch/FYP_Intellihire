@@ -182,10 +182,10 @@ const VideoRecordingModal = ({ sessionId, questionText, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4">
-      <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-full max-w-5xl h-[80vh] bg-white rounded-3xl overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4 overflow-y-auto">
+      <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-full max-w-5xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col my-auto max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white">
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl bg-primary-100 flex items-center justify-center shadow-sm">
               <Video className="w-6 h-6 text-primary-600" />
@@ -204,8 +204,8 @@ const VideoRecordingModal = ({ sessionId, questionText, onClose }) => {
           </button>
         </div>
 
-        {/* Main Content */}
-        <div className="flex flex-1 overflow-hidden">
+        {/* Main Content - Scrollable */}
+        <div className="flex flex-1 overflow-hidden min-h-0">
           {/* Video + Transcript Section */}
           <div className="flex-1 flex flex-col bg-slate-900 relative">
             <video ref={videoRef} autoPlay muted playsInline className="w-full h-full object-cover" />
@@ -252,9 +252,9 @@ const VideoRecordingModal = ({ sessionId, questionText, onClose }) => {
               {/* Key Metrics */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Blinks</p>
-                  <p className="text-2xl font-black text-slate-900 mt-2">{videoStats?.blink_total ?? 0}</p>
-                  <p className="text-[9px] font-bold text-slate-400 mt-1">{videoStats?.blink_bpm ?? 0}/min</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Dominant Emotion</p>
+                  <p className="text-2xl font-black text-slate-900 mt-2 capitalize">{videoStats?.emotion || 'Neutral'}</p>
+                  <p className="text-[9px] font-bold text-slate-400 mt-1">Primary</p>
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Stress</p>
@@ -297,7 +297,6 @@ const VideoRecordingModal = ({ sessionId, questionText, onClose }) => {
               <div className="pt-3 border-t border-slate-200 rounded-lg bg-slate-50 p-3">
                 <h4 className="text-[9px] font-black uppercase tracking-widest text-slate-900 mb-2">Status</h4>
                 <div className="space-y-1 text-[9px] font-bold text-slate-600">
-                  <p>Face: {videoStats?.face_detected ? '✓ Detected' : '⚠ Searching'}</p>
                   {videoStats?.head_pose && (
                     <p>Head Pose: P{videoStats.head_pose[0]} Y{videoStats.head_pose[1]} R{videoStats.head_pose[2]}</p>
                   )}
@@ -308,7 +307,7 @@ const VideoRecordingModal = ({ sessionId, questionText, onClose }) => {
         </div>
 
         {/* Footer with Controls */}
-        <div className="p-4 bg-gradient-to-t from-slate-50 to-white border-t border-slate-200 flex items-center justify-between">
+        <div className="p-4 bg-gradient-to-t from-slate-50 to-white border-t border-slate-200 flex items-center justify-between flex-shrink-0">
           <div className="flex-1">
             {isRecording && (
               <div className="flex items-center gap-2">

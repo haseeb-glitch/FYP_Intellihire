@@ -21,8 +21,9 @@ async def start_video_session(session_id: str, current_user = Depends(get_curren
     if not session:
         raise HTTPException(status_code=404, detail='Session not found')
 
+    # If session is already active, return success (idempotent)
     if video_session_manager.is_active(session_id):
-        raise HTTPException(status_code=409, detail='Video session already active')
+        return {"status": "recording", "session_id": session_id}
 
     try:
         video_session_manager.create_session(session_id)
@@ -113,6 +114,11 @@ async def stop_video_session(session_id: str, request: Request, current_user = D
             "time_taken": analysis_result.get("time_taken"),
             "performance_trend": analysis_result.get("performance_summary", {}).get("performance_trend"),
             "transcript_error": transcript_error,
+            "video_metrics": analysis_result.get("video_metrics", {}),
+            "video_tips": analysis_result.get("video_tips", []),
+            "wpm": analysis_result.get("wpm", 0),
+            "speech_confidence": analysis_result.get("speech_confidence", 5.0),
+            "filler_words": analysis_result.get("filler_words", 0),
         }
 
         if next_sq:
@@ -203,6 +209,11 @@ async def submit_video(session_id: str, video: UploadFile = File(...), request: 
             "total_questions": session.total_questions,
             "time_taken": analysis_result.get("time_taken"),
             "performance_trend": analysis_result.get("performance_summary", {}).get("performance_trend"),
+            "video_metrics": analysis_result.get("video_metrics", {}),
+            "video_tips": analysis_result.get("video_tips", []),
+            "wpm": analysis_result.get("wpm", 0),
+            "speech_confidence": analysis_result.get("speech_confidence", 5.0),
+            "filler_words": analysis_result.get("filler_words", 0),
         }
 
         if next_sq:

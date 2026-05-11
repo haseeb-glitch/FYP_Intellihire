@@ -14,10 +14,23 @@ Look for vocal steadiness, speech rate variance, and pause ratios.
 Linguistic hedging and tone must be considered together.
 """,
     'video': """You are a Stress Analysis Specialist evaluating a VIDEO interview answer.
-Analyze the transcript, the audio signals, AND the computer vision (CV) signals:
-Audio: {audio_signals}
-CV: {cv_signals}
-Evaluate composure based on head stability, eye contact score, dominant emotions, and vocal tone.
+Analyze stress through MULTIPLE dimensions:
+
+1. VISUAL/BODY LANGUAGE (CV Signals):
+{cv_signals}
+
+2. VOCAL/SPEECH (Audio Signals):
+{audio_signals}
+
+3. LINGUISTIC (Transcript Analysis):
+- Look for hedging words, filler usage, circular reasoning
+- Assess how logically structured the response is
+- Evaluate directness vs evasion in communication
+
+HOLISTIC EVALUATION:
+Consider all three dimensions together. A candidate who speaks confidently but has poor posture shows moderate stress.
+One with excellent eye contact and confident voice but evasive language shows suppressed stress.
+Integrate all signals for a comprehensive stress assessment.
 """
 }
 

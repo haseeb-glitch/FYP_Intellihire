@@ -46,7 +46,25 @@ NEVER default to 5.0. If the answer is bad, score it 1-3. If it's gibberish, sco
     elif answer_mode == 'audio':
         mode_instructions = f"\nNote: This is an AUDIO response. In addition to content, consider these audio signals:\n{audio_signals}\nEvaluate vocal confidence and clarity based on these signals."
     elif answer_mode == 'video':
-        mode_instructions = f"\nNote: This is a VIDEO response. In addition to content and audio, consider these CV signals:\n{cv_signals}\nAnd these audio signals:\n{audio_signals}\nEvaluate overall presence, eye contact, and emotional stability."
+        mode_instructions = f"""
+Note: This is a VIDEO response. 
+In addition to content and audio, evaluate based on these signals:
+
+CV SIGNALS (Computer Vision - Body Language & Emotion):
+{cv_signals}
+
+AUDIO SIGNALS (Voice & Speech):
+{audio_signals}
+
+When evaluating a VIDEO response, consider:
+1. Emotional Stability: Assess the detected emotions and how consistent they were
+2. Stress Management: Evaluate if stress levels were managed well throughout the response
+3. Eye Contact & Presence: Consider gaze and eye contact quality
+4. Posture & Body Language: Evaluate professional presentation and posture
+5. Speech Quality: Consider the vocal delivery, pace, and confidence
+6. Content & Delivery: Balance the quality of content with the quality of delivery
+
+Include observations about these non-verbal signals in your feedback, and provide tips for improvement in these areas."""
 
     system_prompt = base_prompt + mode_instructions
     user_message = f"Please evaluate this response: {answer}"

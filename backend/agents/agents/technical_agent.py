@@ -66,6 +66,26 @@ NEVER default to 5.0. If the candidate gives wrong answers or says 'I don't know
 - key_missing_concepts (list of strings): Concepts the candidate failed to mention or implement.
 """
 
+    # Add video mode insights if applicable
+    if answer_mode == 'video':
+        system_prompt += f"""
+
+IMPORTANT: This is a VIDEO response. Additionally, consider these non-verbal signals in your feedback:
+
+CV SIGNALS (Computer Vision - Body Language & Emotion):
+{cv_signals}
+
+AUDIO SIGNALS (Voice & Speech Analysis):
+{audio_signals}
+
+When evaluating this video response, also comment on:
+1. Technical Confidence: How confident was the candidate in their technical explanation (based on vocal and visual signals)?
+2. Problem-Solving Approach: Did their body language and tone suggest systematic thinking or confusion?
+3. Communication Clarity: Was the technical explanation delivered clearly and at appropriate pace?
+4. Composure Under Pressure: Did they maintain composure when discussing complex topics?
+
+In your feedback, briefly mention any observations about their delivery and presence alongside the technical evaluation."""
+
     user_message = f"Please evaluate this technical response: {answer}"
 
     try:

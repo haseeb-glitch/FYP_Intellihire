@@ -1016,7 +1016,41 @@ export const Interview = () => {
             } else if (!data.cancelled) {
               const userTranscript = data.transcript || '(Video Answer)';
               setUserAnswer(userTranscript);
-              setFeedback(data.feedback || 'Your video answer was processed.');
+              
+              // Build feedback with metrics if video mode
+              let feedbackText = data.feedback || 'Your video answer was processed.';
+              
+              // Add video performance metrics if available
+              if (data.video_metrics || data.wpm || data.video_tips) {
+                const parts = [feedbackText];
+                
+                // Add WPM and confidence
+                if (data.wpm) {
+                  parts.push(`\nSpeech Analysis: ${data.wpm} WPM | Confidence: ${Math.round(data.speech_confidence)}/10`);
+                }
+                
+                // Add video metrics
+                if (data.video_metrics) {
+                  const metrics = data.video_metrics;
+                  parts.push(`\nVisual Metrics:`);
+                  if (metrics.dominant_emotion) parts.push(`  • Emotion: ${metrics.dominant_emotion.charAt(0).toUpperCase() + metrics.dominant_emotion.slice(1)}`);
+                  if (metrics.average_stress !== undefined) parts.push(`  • Stress: ${Math.round(metrics.average_stress)}%`);
+                  if (metrics.gaze_score !== undefined) parts.push(`  • Eye Contact: ${Math.round(metrics.gaze_score)}%`);
+                  if (metrics.posture_score !== undefined) parts.push(`  • Posture: ${Math.round(metrics.posture_score)}%`);
+                }
+                
+                // Add tips
+                if (data.video_tips && data.video_tips.length > 0) {
+                  parts.push(`\nTips for Improvement:`);
+                  data.video_tips.forEach(tip => {
+                    parts.push(`  • ${tip}`);
+                  });
+                }
+                
+                feedbackText = parts.join('\n');
+              }
+              
+              setFeedback(feedbackText);
               setSubmitting(false);
 
               if (data.finished) {

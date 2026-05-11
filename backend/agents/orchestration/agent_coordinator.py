@@ -29,6 +29,107 @@ def count_filler_words(text: str) -> int:
     return count
 
 
+def calculate_wpm(text: str, time_taken_seconds: int) -> float:
+    """Calculate words per minute from transcript and time taken."""
+    if not text or time_taken_seconds <= 0:
+        return 0.0
+    words = len(text.split())
+    minutes = time_taken_seconds / 60.0
+    wpm = words / minutes if minutes > 0 else 0.0
+    return round(wpm, 1)
+
+
+def calculate_confidence_from_speech(wpm: float, filler_count: int, transcript: str) -> float:
+    """
+    Calculate confidence score (0-10) based on:
+    - Words per minute (target 130 wpm)
+    - Filler word count
+    - Transcript length
+    """
+    base_score = 5.0
+    
+    # WPM scoring (optimal is around 130 wpm)
+    optimal_wpm = 130
+    wpm_diff = abs(wpm - optimal_wpm)
+    if wpm_diff <= 20:  # Within 20 of optimal
+        wpm_score = 2.0
+    elif wpm_diff <= 50:  # Within 50 of optimal
+        wpm_score = 1.0
+    else:  # Far from optimal
+        wpm_score = -1.0
+    
+    # Filler word scoring
+    word_count = len(transcript.split()) if transcript else 0
+    if word_count > 0:
+        filler_ratio = (filler_count / word_count) * 100
+        if filler_ratio < 5:  # Less than 5% fillers
+            filler_score = 1.5
+        elif filler_ratio < 15:  # Less than 15% fillers
+            filler_score = 0.5
+        else:  # More than 15% fillers
+            filler_score = -1.0
+    else:
+        filler_score = 0.0
+    
+    confidence = base_score + wpm_score + filler_score
+    return round(max(1.0, min(10.0, confidence)), 1)
+
+
+def extract_video_metrics(cv_signals: dict) -> dict:
+    """Extract and format video metrics from cv_signals."""
+    if not cv_signals:
+        return {}
+    
+    return {
+        "dominant_emotion": cv_signals.get("dominant_emotion", "neutral"),
+        "emotion_confidence": cv_signals.get("emotion_confidence", 0),
+        "average_stress": cv_signals.get("average_stress", 0),
+        "peak_stress": cv_signals.get("peak_stress", 0),
+        "gaze_score": cv_signals.get("gaze_score", 0),
+        "posture_score": cv_signals.get("posture_score", 0),
+        "blink_count": cv_signals.get("blink_statistics", {}).get("total", 0),
+        "eye_contact_percentage": cv_signals.get("eye_contact_percentage", 0),
+    }
+
+
+def generate_video_tips(video_metrics: dict, video_mode: bool = False) -> list:
+    """Generate actionable tips based on video metrics."""
+    if not video_mode or not video_metrics:
+        return []
+    
+    tips = []
+    
+    # Emotion tips
+    emotion = video_metrics.get("dominant_emotion", "neutral").lower()
+    if emotion == "nervous":
+        tips.append("Practice deep breathing to manage nervousness. You showed signs of nervousness - remember to take pauses and composed breaths.")
+    elif emotion == "confident":
+        tips.append("Great emotional control! Your confident demeanor was evident throughout.")
+    
+    # Stress tips
+    avg_stress = video_metrics.get("average_stress", 0)
+    if avg_stress > 70:
+        tips.append(f"Your stress level was elevated ({int(avg_stress)}%). Try to relax your shoulders, maintain steady breathing, and speak at a measured pace.")
+    elif avg_stress > 50:
+        tips.append(f"You showed moderate stress ({int(avg_stress)}%). Practice maintaining composure by focusing on your key points.")
+    
+    # Gaze tips
+    gaze_score = video_metrics.get("gaze_score", 0)
+    if gaze_score < 40:
+        tips.append("Work on maintaining better eye contact with the camera. Looking directly at the lens shows confidence and engagement.")
+    elif gaze_score < 60:
+        tips.append("Your eye contact was decent but could be improved. Try to minimize glancing away from the camera.")
+    
+    # Posture tips
+    posture_score = video_metrics.get("posture_score", 0)
+    if posture_score < 40:
+        tips.append("Your posture needs improvement. Sit upright, keep shoulders back, and maintain a professional appearance.")
+    elif posture_score < 60:
+        tips.append("Good posture awareness. Try to maintain more consistent upright positioning throughout the interview.")
+    
+    return tips
+
+
 async def run_all_agents(question, answer, session, sq):
     """
     Orchestrates the analysis of a question response based on the modality and agent type.
@@ -150,6 +251,18 @@ async def run_all_agents(question, answer, session, sq):
     # Count filler words
     filler_count = count_filler_words(transcript)
     sq.filler_word_count = filler_count
+    
+    # Calculate WPM
+    wpm = calculate_wpm(transcript, time_taken)
+    
+    # Calculate confidence based on WPM and filler words
+    speech_confidence = calculate_confidence_from_speech(wpm, filler_count, transcript)
+    
+    # Extract video metrics if available
+    video_metrics = extract_video_metrics(cv_signals)
+    
+    # Generate tips based on video performance
+    video_tips = generate_video_tips(video_metrics, session.answer_mode == 'video')
 
     overall_score = 5.0  # Default
 
@@ -218,5 +331,9 @@ async def run_all_agents(question, answer, session, sq):
         "next_difficulty": next_difficulty,
         "performance_summary": perf_summary,
         "time_taken": time_taken,
-        "filler_words": filler_count
+        "filler_words": filler_count,
+        "wpm": wpm,
+        "speech_confidence": speech_confidence,
+        "video_metrics": video_metrics,
+        "video_tips": video_tips
     }

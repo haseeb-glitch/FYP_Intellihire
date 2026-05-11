@@ -19,7 +19,7 @@ import {
 
 /* ─── Grade helpers ─── */
 const gradeColors = { A: 'text-emerald-500', B: 'text-blue-500', C: 'text-amber-500', D: 'text-orange-500', F: 'text-red-500' };
-const gradeGlows  = { A: 'shadow-emerald-500/30', B: 'shadow-blue-500/30', C: 'shadow-amber-500/30', D: 'shadow-orange-500/30', F: 'shadow-red-500/30' };
+const gradeGlows = { A: 'shadow-emerald-500/30', B: 'shadow-blue-500/30', C: 'shadow-amber-500/30', D: 'shadow-orange-500/30', F: 'shadow-red-500/30' };
 const difficultyColors = { easy: '#10b981', medium: '#f59e0b', hard: '#ef4444' };
 
 /* ─── Agent config ─── */
@@ -28,21 +28,21 @@ const agentConfig = {
     icon: Users, label: 'HR / Communication', color: 'blue',
     bgClass: 'bg-blue-50', borderClass: 'border-blue-200', textClass: 'text-blue-600', iconBg: 'bg-blue-500',
     metrics: [
-      { key: 'clarity',         label: 'Clarity',         icon: MessageSquare },
-      { key: 'relevance',       label: 'Relevance',       icon: Target },
+      { key: 'clarity', label: 'Clarity', icon: MessageSquare },
+      { key: 'relevance', label: 'Relevance', icon: Target },
       { key: 'professionalism', label: 'Professionalism', icon: Award },
-      { key: 'star_method',     label: 'STAR Method',     icon: Star },
-      { key: 'communication',   label: 'Communication',   icon: Volume2 },
+      { key: 'star_method', label: 'STAR Method', icon: Star },
+      { key: 'communication', label: 'Communication', icon: Volume2 },
     ],
   },
   technical: {
     icon: Code2, label: 'Technical', color: 'violet',
     bgClass: 'bg-violet-50', borderClass: 'border-violet-200', textClass: 'text-violet-600', iconBg: 'bg-violet-500',
     metrics: [
-      { key: 'correctness',     label: 'Correctness',     icon: CheckCircle2 },
-      { key: 'depth',           label: 'Depth',           icon: BarChart3 },
-      { key: 'efficiency',      label: 'Efficiency',      icon: Gauge },
-      { key: 'communication',   label: 'Explanation',     icon: MessageSquare },
+      { key: 'correctness', label: 'Correctness', icon: CheckCircle2 },
+      { key: 'depth', label: 'Depth', icon: BarChart3 },
+      { key: 'efficiency', label: 'Efficiency', icon: Gauge },
+      { key: 'communication', label: 'Explanation', icon: MessageSquare },
       { key: 'problem_solving', label: 'Problem Solving', icon: Brain },
     ],
   },
@@ -50,11 +50,11 @@ const agentConfig = {
     icon: Zap, label: 'Stress / Composure', color: 'amber',
     bgClass: 'bg-amber-50', borderClass: 'border-amber-200', textClass: 'text-amber-600', iconBg: 'bg-amber-500',
     metrics: [
-      { key: 'composure',          label: 'Composure',         icon: Activity },
-      { key: 'confidence',         label: 'Confidence',        icon: Award },
-      { key: 'eye_contact',        label: 'Eye Contact',       icon: Eye },
-      { key: 'vocal_steadiness',   label: 'Vocal Steadiness',  icon: Volume2 },
-      { key: 'pressure_handling',  label: 'Pressure Handling', icon: Zap },
+      { key: 'composure', label: 'Composure', icon: Activity },
+      { key: 'confidence', label: 'Confidence', icon: Award },
+      { key: 'eye_contact', label: 'Eye Contact', icon: Eye },
+      { key: 'vocal_steadiness', label: 'Vocal Steadiness', icon: Volume2 },
+      { key: 'pressure_handling', label: 'Pressure Handling', icon: Zap },
     ],
   },
 };
@@ -156,11 +156,11 @@ const AgentDetailCard = ({ agentType, scores, detailed, feedback, metricsOverrid
 
 /* ─── Results ─── */
 export const Results = () => {
-  const [data, setData]               = useState(null);
-  const [loading, setLoading]         = useState(true);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
-  const navigate  = useNavigate();
-  const location  = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const sessionId = new URLSearchParams(location.search).get('session');
 
   useEffect(() => {
@@ -201,28 +201,28 @@ export const Results = () => {
   }
 
   /* ── Derived data ── */
-  const eval_            = data?.evaluation || {};
-  const score            = eval_.final_score || 0;
-  const grade            = eval_.grade || (score >= 80 ? 'A' : score >= 60 ? 'B' : score >= 40 ? 'C' : 'D');
-  const strengths        = eval_.strengths || [];
-  const improvements     = eval_.improvements || [];
-  const roadmap          = eval_.roadmap?.steps || (Array.isArray(eval_.roadmap) ? eval_.roadmap : []);
-  const recommendation   = eval_.recommendation || '';
-  const feedback         = eval_.feedbacks?.coordinator || eval_.coordinator_feedback || '';
-  const agentsUsed       = eval_.agents_used || ['hr', 'technical', 'stress'];
-  const interviewMode    = eval_.interview_mode || data?.interview_mode || 'mixed';
+  const eval_ = data?.evaluation || {};
+  const score = eval_.final_score || 0;
+  const grade = eval_.grade || (score >= 80 ? 'A' : score >= 60 ? 'B' : score >= 40 ? 'C' : 'D');
+  const strengths = eval_.strengths || [];
+  const improvements = eval_.improvements || [];
+  const roadmap = eval_.roadmap?.steps || (Array.isArray(eval_.roadmap) ? eval_.roadmap : []);
+  const recommendation = eval_.recommendation || '';
+  const feedback = eval_.feedbacks?.coordinator || eval_.coordinator_feedback || '';
+  const agentsUsed = eval_.agents_used || ['hr', 'technical', 'stress'];
+  const interviewMode = eval_.interview_mode || data?.interview_mode || 'mixed';
   const detailedAnalysis = eval_.detailed_analysis || {};
 
-  const analytics           = eval_.performance_analytics || {};
-  const perQuestionData     = analytics.performance_data?.per_question || [];
+  const analytics = eval_.performance_analytics || {};
+  const perQuestionData = analytics.performance_data?.per_question || [];
   const difficultyProgression = analytics.difficulty_progression || [];
-  const avgResponseTime     = analytics.average_response_time || 0;
-  const totalFillerWords    = analytics.total_filler_words || 0;
-  const performanceTrend    = analytics.performance_trend || 'stable';
-  const finalDifficulty     = analytics.final_difficulty_reached || 'easy';
+  const avgResponseTime = analytics.average_response_time || 0;
+  const totalFillerWords = analytics.total_filler_words || 0;
+  const performanceTrend = analytics.performance_trend || 'stable';
+  const finalDifficulty = analytics.final_difficulty_reached || 'easy';
 
-  const hrScores     = eval_.hr_scores || {};
-  const techScores   = eval_.technical_scores || {};
+  const hrScores = eval_.hr_scores || {};
+  const techScores = eval_.technical_scores || {};
   const stressScores = eval_.stress_scores || {};
 
   const modeLabel = { hr: 'HR Interview', technical: 'Technical Interview', stress: 'Stress Interview', mixed: 'Full Agentic Interview' }[interviewMode] || interviewMode;
@@ -231,10 +231,10 @@ export const Results = () => {
   /* Stress metrics filtered by answer mode */
   const answerMode = data?.answer_mode || 'text';
   const stressMetrics = useMemo(() => [
-    { key: 'composure',         label: 'Composure',         icon: Activity },
-    { key: 'confidence',        label: 'Confidence',        icon: Award },
-    ...(answerMode !== 'text'  ? [{ key: 'vocal_steadiness', label: 'Vocal Steadiness', icon: Volume2 }] : []),
-    ...(answerMode === 'video' ? [{ key: 'eye_contact',      label: 'Eye Contact',      icon: Eye      }] : []),
+    { key: 'composure', label: 'Composure', icon: Activity },
+    { key: 'confidence', label: 'Confidence', icon: Award },
+    ...(answerMode !== 'text' ? [{ key: 'vocal_steadiness', label: 'Vocal Steadiness', icon: Volume2 }] : []),
+    ...(answerMode === 'video' ? [{ key: 'eye_contact', label: 'Eye Contact', icon: Eye }] : []),
     { key: 'pressure_handling', label: 'Pressure Handling', icon: Zap },
   ], [answerMode]);
 
@@ -242,17 +242,17 @@ export const Results = () => {
   const radarData = useMemo(() => {
     const points = [];
     if (agentsUsed.includes('hr') && hrScores) {
-      points.push({ skill: 'Clarity',        value: hrScores.clarity         || 0 });
+      points.push({ skill: 'Clarity', value: hrScores.clarity || 0 });
       points.push({ skill: 'Professionalism', value: hrScores.professionalism || 0 });
     }
     if (agentsUsed.includes('technical') && techScores) {
       points.push({ skill: 'Correctness', value: techScores.correctness || 0 });
-      points.push({ skill: 'Depth',       value: techScores.depth       || 0 });
+      points.push({ skill: 'Depth', value: techScores.depth || 0 });
     }
     if (agentsUsed.includes('stress') && stressScores) {
       const sd = detailedAnalysis?.stress || {};
-      points.push({ skill: 'Composure',        value: sd.composure         || stressScores.composure         || 0 });
-      points.push({ skill: 'Confidence',        value: sd.confidence        || stressScores.confidence        || 0 });
+      points.push({ skill: 'Composure', value: sd.composure || stressScores.composure || 0 });
+      points.push({ skill: 'Confidence', value: sd.confidence || stressScores.confidence || 0 });
       points.push({ skill: 'Pressure Handling', value: sd.pressure_handling || stressScores.pressure_handling || 0 });
     }
     return points;
@@ -260,10 +260,10 @@ export const Results = () => {
 
   /* Hero stats strip */
   const heroStats = useMemo(() => [
-    { label: 'Avg Response',   value: `${Math.round(avgResponseTime)}s`,                                       icon: Clock,        iconColor: 'text-blue-500',   bg: 'bg-blue-50'   },
-    { label: 'Filler Words',   value: totalFillerWords,                                                         icon: MessageSquare,iconColor: 'text-amber-500',  bg: 'bg-amber-50'  },
-    { label: 'Trend',          value: performanceTrend.charAt(0).toUpperCase() + performanceTrend.slice(1),     icon: TrendingUp,   iconColor: 'text-emerald-500',bg: 'bg-emerald-50'},
-    { label: 'Max Difficulty', value: finalDifficulty.charAt(0).toUpperCase() + finalDifficulty.slice(1),      icon: Target,       iconColor: 'text-violet-500', bg: 'bg-violet-50' },
+    { label: 'Avg Response', value: `${Math.round(avgResponseTime)}s`, icon: Clock, iconColor: 'text-blue-500', bg: 'bg-blue-50' },
+    { label: 'Filler Words', value: totalFillerWords, icon: MessageSquare, iconColor: 'text-amber-500', bg: 'bg-amber-50' },
+    { label: 'Trend', value: performanceTrend.charAt(0).toUpperCase() + performanceTrend.slice(1), icon: TrendingUp, iconColor: 'text-emerald-500', bg: 'bg-emerald-50' },
+    { label: 'Max Difficulty', value: finalDifficulty.charAt(0).toUpperCase() + finalDifficulty.slice(1), icon: Target, iconColor: 'text-violet-500', bg: 'bg-violet-50' },
   ], [avgResponseTime, totalFillerWords, performanceTrend, finalDifficulty]);
 
   return (
@@ -299,12 +299,11 @@ export const Results = () => {
                 <span className="text-lg text-slate-400 mb-0.5">%</span>
               </div>
               {recommendation && (
-                <span className={`mt-3 inline-block px-3 py-1 rounded-full text-xs font-bold border ${
-                  recommendation.includes('Strong Hire') ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                  recommendation.includes('Hire') && !recommendation.includes('No') ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                  recommendation.includes('Lean') ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                  'bg-red-50 text-red-700 border-red-200'
-                }`}>{recommendation}</span>
+                <span className={`mt-3 inline-block px-3 py-1 rounded-full text-xs font-bold border ${recommendation.includes('Strong Hire') ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                    recommendation.includes('Hire') && !recommendation.includes('No') ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                      recommendation.includes('Lean') ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                        'bg-red-50 text-red-700 border-red-200'
+                  }`}>{recommendation}</span>
               )}
             </div>
 
@@ -566,9 +565,9 @@ export const Results = () => {
         {/* ── Quick Actions ── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
-            { label: 'Try Another Interview', sub: 'Start a new mock session',      path: '/setup',    Icon: PlayCircle,   iconBg: 'bg-primary-500', hoverBorder: 'hover:border-primary-200', hoverBg: 'hover:bg-primary-50/40'  },
-            { label: 'Career Roadmap',         sub: 'Track your learning path',      path: '/roadmap',  Icon: Route,        iconBg: 'bg-blue-500',    hoverBorder: 'hover:border-blue-200',    hoverBg: 'hover:bg-blue-50/40'     },
-            { label: 'AI Coach',               sub: 'Get personalised feedback',     path: '/ai-coach', Icon: BrainCircuit, iconBg: 'bg-violet-500',  hoverBorder: 'hover:border-violet-200',  hoverBg: 'hover:bg-violet-50/40'   },
+            { label: 'Try Another Interview', sub: 'Start a new mock session', path: '/setup', Icon: PlayCircle, iconBg: 'bg-primary-500', hoverBorder: 'hover:border-primary-200', hoverBg: 'hover:bg-primary-50/40' },
+            { label: 'Career Roadmap', sub: 'Track your learning path', path: '/roadmap', Icon: Route, iconBg: 'bg-blue-500', hoverBorder: 'hover:border-blue-200', hoverBg: 'hover:bg-blue-50/40' },
+            { label: 'AI Coach', sub: 'Get personalised feedback', path: '/ai-coach', Icon: BrainCircuit, iconBg: 'bg-violet-500', hoverBorder: 'hover:border-violet-200', hoverBg: 'hover:bg-violet-50/40' },
           ].map(action => (
             <motion.button key={action.label} onClick={() => navigate(action.path)}
               whileHover={{ scale: 1.015 }} whileTap={{ scale: 0.985 }}
