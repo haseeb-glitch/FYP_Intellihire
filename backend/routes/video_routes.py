@@ -9,6 +9,8 @@ from backend.services.video_service import video_session_manager
 from backend.config import Config
 from backend.agents.orchestration import agent_coordinator, interview_manager
 from backend.processing import interview_controller
+from backend.agents.video import video_analysis
+from fastapi import UploadFile
 
 video_router = APIRouter()
 
@@ -131,6 +133,96 @@ async def stop_video_session(session_id: str, request: Request, current_user = D
         raise
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Failed to stop video session: {exc}")
+
+
+@video_router.post('/session/{session_id}/submit-video')
+async def submit_video(session_id: str, video: UploadFile = File(...), request: Request = None, current_user = Depends(get_current_user)):
+    """
+    Accept a complete video upload (single blob), run post-recording analysis,
+    and return the same response format used by the streaming stop endpoint.
+    """
+    session = InterviewSession.objects(id=session_id, user=current_user).first()
+    if not session:
+        raise HTTPException(status_code=404, detail='Session not found')
+
+    sq = SessionQuestion.objects(
+        session=session_id, transcript=None, text_answer=None
+    ).order_by('order_number').first()
+    if not sq:
+        raise HTTPException(status_code=400, detail='All questions answered')
+
+    try:
+        # Save uploaded video to uploads folder
+        upload_root = Path(Config.UPLOAD_FOLDER) / 'sessions' / session_id
+        upload_root.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+        video_filename = f'video_{timestamp}.webm'
+        video_path = upload_root / video_filename
+
+        content = await video.read()
+        with open(video_path, 'wb') as f:
+            f.write(content)
+
+        # Try to get fallback transcript from form/json if provided
+        fallback_answer = ''
+        if request is not None:
+            fallback_answer = await _extract_fallback_answer(request)
+
+        # Run analysis
+        analysis = video_analysis.analyze_video_with_transcript(str(video_path), fallback_answer or '')
+
+        # Populate SessionQuestion
+        sq.video_file_path = str(video_path)
+        sq.transcript = analysis.get('transcript_text') or fallback_answer or ''
+        sq.transcript_file = analysis.get('transcript_file')
+        sq.cv_signals = _build_cv_signals(analysis)
+        sq.answered_at = datetime.utcnow()
+        sq.save()
+
+        # Run agents
+        analysis_result = await agent_coordinator.run_all_agents(
+            sq.question_text, sq.transcript or '', session, sq
+        )
+
+        session.answered_questions += 1
+        session.save()
+
+        next_sq = SessionQuestion.objects(
+            session=session_id, transcript=None, text_answer=None
+        ).order_by('order_number').first()
+
+        response = {
+            "status": "processed",
+            "report": analysis,
+            "feedback": analysis_result.get("feedback"),
+            "scores": analysis_result.get("scores"),
+            "transcript": analysis_result.get("transcript") or sq.transcript,
+            "transcript_file": analysis.get("transcript_file"),
+            "finished": next_sq is None,
+            "questions_answered": session.answered_questions,
+            "total_questions": session.total_questions,
+            "time_taken": analysis_result.get("time_taken"),
+            "performance_trend": analysis_result.get("performance_summary", {}).get("performance_trend"),
+        }
+
+        if next_sq:
+            next_difficulty = analysis_result.get("next_difficulty", "easy")
+            next_sq.difficulty = next_difficulty
+            next_sq.question_started_at = datetime.utcnow()
+            next_sq.save()
+            response["next_question"] = interview_controller.build_question_response(next_sq, session)
+            response["next_difficulty"] = next_difficulty
+        else:
+            try:
+                await interview_manager.complete_interview(session_id)
+            except Exception as exc:
+                print(f"Video interview completion error: {exc}")
+
+        return response
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Failed to process uploaded video: {exc}")
 
 
 def _build_cv_signals(report):

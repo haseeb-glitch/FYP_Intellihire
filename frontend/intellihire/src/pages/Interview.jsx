@@ -1,3 +1,4 @@
+import VideoRecordingModal from '../components/VideoRecordingModal';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { PageTransition } from '../components/layout/PageTransition';
 import { GlassCard } from '../components/ui/GlassCard';
@@ -60,75 +61,75 @@ const HardwareCheck = ({ mode, onComplete }) => {
 
   return (
     <div className="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-xl flex items-center justify-center p-6">
-       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="max-w-md w-full bg-white rounded-3xl shadow-2xl border border-[#D6E7F7] overflow-hidden">
-          <div className="bg-primary-500 p-8 flex flex-col items-center text-center">
-             <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-4">
-                <Settings className="w-8 h-8 text-white animate-spin-slow" />
-             </div>
-             <h2 className="text-xl font-black text-white uppercase tracking-tight">Hardware Check</h2>
-             <p className="text-primary-100 text-xs mt-1 font-medium italic">Ensuring a seamless session for you.</p>
+      <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="max-w-md w-full bg-white rounded-3xl shadow-2xl border border-[#D6E7F7] overflow-hidden">
+        <div className="bg-primary-500 p-8 flex flex-col items-center text-center">
+          <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-4">
+            <Settings className="w-8 h-8 text-white animate-spin-slow" />
           </div>
+          <h2 className="text-xl font-black text-white uppercase tracking-tight">Hardware Check</h2>
+          <p className="text-primary-100 text-xs mt-1 font-medium italic">Ensuring a seamless session for you.</p>
+        </div>
 
-          <div className="p-8 space-y-6">
-             <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                   <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-400 shadow-sm">
-                         <Mic className="w-5 h-5" />
-                      </div>
-                      <div>
-                         <p className="text-[11px] font-black uppercase text-slate-400">Microphone</p>
-                         <p className="text-[13px] font-bold text-slate-700">Audio Input</p>
-                      </div>
-                   </div>
-                   {status === 'ready' ? <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white"><CheckCircle2 className="w-4 h-4" /></div> : <Loader2 className="w-5 h-5 text-primary-400 animate-spin" />}
+        <div className="p-8 space-y-6">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-400 shadow-sm">
+                  <Mic className="w-5 h-5" />
                 </div>
+                <div>
+                  <p className="text-[11px] font-black uppercase text-slate-400">Microphone</p>
+                  <p className="text-[13px] font-bold text-slate-700">Audio Input</p>
+                </div>
+              </div>
+              {status === 'ready' ? <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white"><CheckCircle2 className="w-4 h-4" /></div> : <Loader2 className="w-5 h-5 text-primary-400 animate-spin" />}
+            </div>
 
-                {mode === 'video' && (
-                  <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-400 shadow-sm">
-                           <Video className="w-5 h-5" />
-                        </div>
-                        <div>
-                           <p className="text-[11px] font-black uppercase text-slate-400">Camera</p>
-                           <p className="text-[13px] font-bold text-slate-700">Visual Feed</p>
-                        </div>
-                     </div>
-                     {status === 'ready' ? <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white"><CheckCircle2 className="w-4 h-4" /></div> : <Loader2 className="w-5 h-5 text-primary-400 animate-spin" />}
+            {mode === 'video' && (
+              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-400 shadow-sm">
+                    <Video className="w-5 h-5" />
                   </div>
-                )}
-             </div>
-
-             {status === 'error' ? (
-                <div className="bg-red-50 p-4 rounded-xl border border-red-100 flex items-start gap-3">
-                   <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                   <div>
-                      <p className="text-xs font-bold text-red-700">Access Denied</p>
-                      <p className="text-[10px] text-red-500 leading-tight mt-0.5">Please allow microphone permissions in your browser settings and try again.</p>
-                      <button onClick={checkHardware} className="mt-2 text-[10px] font-black uppercase text-red-700 underline">Retry Check</button>
-                   </div>
+                  <div>
+                    <p className="text-[11px] font-black uppercase text-slate-400">Camera</p>
+                    <p className="text-[13px] font-bold text-slate-700">Visual Feed</p>
+                  </div>
                 </div>
-             ) : (
-                <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex items-center gap-3">
-                   <div className="w-6 h-6 rounded-lg bg-white flex items-center justify-center text-emerald-500 shadow-sm"><Info className="w-3.5 h-3.5" /></div>
-                   <p className="text-[10px] font-bold text-emerald-700 leading-tight">Hardware verified. You're ready to start your interview.</p>
-                </div>
-             )}
-
-             <motion.button
-                onClick={handleFinish}
-                disabled={status !== 'ready'}
-                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                className={cn(
-                   "w-full py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-lg",
-                   status === 'ready' ? "bg-primary-500 text-white shadow-primary-500/20" : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                )}
-             >
-                Start Session
-             </motion.button>
+                {status === 'ready' ? <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white"><CheckCircle2 className="w-4 h-4" /></div> : <Loader2 className="w-5 h-5 text-primary-400 animate-spin" />}
+              </div>
+            )}
           </div>
-       </motion.div>
+
+          {status === 'error' ? (
+            <div className="bg-red-50 p-4 rounded-xl border border-red-100 flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-bold text-red-700">Access Denied</p>
+                <p className="text-[10px] text-red-500 leading-tight mt-0.5">Please allow microphone permissions in your browser settings and try again.</p>
+                <button onClick={checkHardware} className="mt-2 text-[10px] font-black uppercase text-red-700 underline">Retry Check</button>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex items-center gap-3">
+              <div className="w-6 h-6 rounded-lg bg-white flex items-center justify-center text-emerald-500 shadow-sm"><Info className="w-3.5 h-3.5" /></div>
+              <p className="text-[10px] font-bold text-emerald-700 leading-tight">Hardware verified. You're ready to start your interview.</p>
+            </div>
+          )}
+
+          <motion.button
+            onClick={handleFinish}
+            disabled={status !== 'ready'}
+            whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+            className={cn(
+              "w-full py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-lg",
+              status === 'ready' ? "bg-primary-500 text-white shadow-primary-500/20" : "bg-slate-100 text-slate-400 cursor-not-allowed"
+            )}
+          >
+            Start Session
+          </motion.button>
+        </div>
+      </motion.div>
     </div>
   );
 };
@@ -141,15 +142,15 @@ const Waveform = ({ volume = 0, isRecording }) => {
         <motion.div
           key={i}
           className="w-1 bg-primary-400 rounded-full"
-          animate={{ 
-            height: isRecording 
-              ? [8, 8 + (volume * (Math.random() * 20 + 10)), 8] 
-              : 8 
+          animate={{
+            height: isRecording
+              ? [8, 8 + (volume * (Math.random() * 20 + 10)), 8]
+              : 8
           }}
-          transition={{ 
-            repeat: isRecording ? Infinity : 0, 
-            duration: 0.2, 
-            delay: i * 0.02 
+          transition={{
+            repeat: isRecording ? Infinity : 0,
+            duration: 0.2,
+            delay: i * 0.02
           }}
         />
       ))}
@@ -256,8 +257,8 @@ const VideoInterviewPanel = ({
                 {isRecording
                   ? 'Speech is being recorded and will be transcribed by AssemblyAI after you stop.'
                   : backendTranscript
-                  ? 'Transcript has been saved and is shown below the question.'
-                  : 'Start recording to capture audio for backend transcription.'}
+                    ? 'Transcript has been saved and is shown below the question.'
+                    : 'Start recording to capture audio for backend transcription.'}
               </p>
               {statusMessage && (
                 <p className="mt-2 text-[10px] font-bold text-amber-200 leading-tight">{statusMessage}</p>
@@ -339,7 +340,7 @@ const InterviewerCard = ({ type, question, isThinking, isAudioMode, isRecording 
           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">AI Interviewer</p>
         </div>
       </div>
-      
+
       <div className="flex-1 flex flex-col justify-center py-1 overflow-y-auto custom-scrollbar min-h-0">
         <AnimatePresence mode="wait">
           <motion.div
@@ -350,31 +351,31 @@ const InterviewerCard = ({ type, question, isThinking, isAudioMode, isRecording 
             {question || "Welcome! I'm ready to begin whenever you are."}
           </motion.div>
         </AnimatePresence>
-        
+
         {(isThinking || (isAudioMode && isRecording)) && (
           <div className="mt-6 flex items-center gap-3">
-             {isRecording ? <Waveform /> : (
-               <motion.div className="flex gap-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                 {[0, 1, 2].map(i => (
-                   <motion.div key={i} className="w-1.5 h-1.5 rounded-full bg-primary-400" animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1, delay: i * 0.2 }} />
-                 ))}
-               </motion.div>
-             )}
-             <span className="text-[10px] font-black uppercase tracking-widest text-primary-500">
-                {isRecording ? "Capturing Voice..." : "AI Evaluating..."}
-             </span>
+            {isRecording ? <Waveform /> : (
+              <motion.div className="flex gap-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                {[0, 1, 2].map(i => (
+                  <motion.div key={i} className="w-1.5 h-1.5 rounded-full bg-primary-400" animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 1, delay: i * 0.2 }} />
+                ))}
+              </motion.div>
+            )}
+            <span className="text-[10px] font-black uppercase tracking-widest text-primary-500">
+              {isRecording ? "Capturing Voice..." : "AI Evaluating..."}
+            </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 pt-3 border-t border-slate-50 shrink-0">
-         <div className="flex items-center justify-between">
-            <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">IntelliHire Intelligence</span>
-            <div className="flex gap-2">
-               {isAudioMode && <Volume2 className="w-3 h-3 text-slate-300" />}
-               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            </div>
-         </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">IntelliHire Intelligence</span>
+          <div className="flex gap-2">
+            {isAudioMode && <Volume2 className="w-3 h-3 text-slate-300" />}
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          </div>
+        </div>
       </div>
     </GlassCard>
   );
@@ -407,6 +408,7 @@ export const Interview = () => {
   const chatEndRef = useRef(null);
 
   const [isRecording, setIsRecording] = useState(false);
+    const [showVideoModal, setShowVideoModal] = useState(false);
   const isRecordingRef = useRef(false);
   const [volume, setVolume] = useState(0);
   const [localTranscript, setLocalTranscript] = useState('');
@@ -468,11 +470,11 @@ export const Interview = () => {
     return () => {
       if (frameTimerRef.current) clearInterval(frameTimerRef.current);
       if (recognitionRef.current) {
-        try { recognitionRef.current.stop(); } catch (e) {}
+        try { recognitionRef.current.stop(); } catch (e) { }
       }
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       if (audioContextRef.current) {
-        try { audioContextRef.current.close(); } catch (e) {}
+        try { audioContextRef.current.close(); } catch (e) { }
       }
       if (videoStreamRef.current) {
         videoStreamRef.current.getTracks().forEach(t => t.stop());
@@ -496,16 +498,16 @@ export const Interview = () => {
       if (codeText) { payload.code = codeText; payload.code_language = currentQuestion?.language || 'python'; }
       const res = await interviewAPI.submitAnswer(sessionId, payload);
       const data = res.data;
-      
+
       if (data.feedback) {
         setFeedback(data.feedback);
       }
-      
+
       if (data.finished) {
         setFinished(true);
         setShowNextButton(false);
         setPendingNextQuestion(null);
-        try { await interviewAPI.completeInterview(sessionId); } catch (e) {}
+        try { await interviewAPI.completeInterview(sessionId); } catch (e) { }
         setTimeout(() => navigate(`/results?session=${sessionId}`), 2500);
       } else if (data.next_question) {
         setPendingNextQuestion(data.next_question);
@@ -514,21 +516,21 @@ export const Interview = () => {
     } catch (err) {
       setFeedback('Error processing your answer. Please try again.');
       setShowNextButton(true);
-    } finally { 
-      setSubmitting(false); 
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleNextQuestion = () => {
     const nextQ = pendingNextQuestion || questions[questionIdx + 1];
     if (!nextQ) return;
-    
+
     setQuestionIdx(prev => prev + 1);
     const newDiff = nextQ.difficulty || 'easy';
     setCurrentDifficulty(newDiff);
     setCurrentQuestion(nextQ);
     setShowCodeEditor(nextQ.requires_code && mode === 'text');
-    
+
     // Reset for new question
     setUserAnswer('');
     setFeedback('');
@@ -558,14 +560,14 @@ export const Interview = () => {
 
     recognition.onend = () => {
       if (isRecordingRef.current) {
-        try { recognition.start(); } catch (e) {}
+        try { recognition.start(); } catch (e) { }
       }
     };
 
     try {
       recognition.start();
       recognitionRef.current = recognition;
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const sendVideoFrame = useCallback(async () => {
@@ -612,49 +614,12 @@ export const Interview = () => {
   });
 
   const startVideoRecording = async () => {
-    try {
-      if (!sessionId) {
-        setVideoStatus('No interview session found. Please start the interview again from setup.');
-        return;
-      }
-      setLocalTranscript('');
-      setVideoStats({});
-      setVideoStatus('Opening camera...');
-
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: { width: 1280, height: 720 } });
-      videoStreamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        try { await videoRef.current.play(); } catch (e) {}
-        await waitForVideoReady(videoRef.current);
-      }
-
-      setRecordingState(true);
-      setVideoStatus('Starting live analysis...');
-
-      try {
-        await interviewAPI.startVideoSession(sessionId);
-      } catch (err) {
-        if (err.response?.status !== 409) throw err;
-      }
-
-      setSavedTranscript('');
-      setSavedTranscriptFile('');
-      setVideoStatus('Live analysis warming up...');
-
-      frameTimerRef.current = setInterval(sendVideoFrame, 450);
-      setTimeout(sendVideoFrame, 50);
-      setTimeout(sendVideoFrame, 550);
-    } catch (err) {
-      console.error('Video recording error:', err);
-      setRecordingState(false);
-      setVideoStatus(err.response?.data?.detail || err.message || 'Camera, microphone, or video analysis could not start.');
-      if (videoStreamRef.current) {
-        videoStreamRef.current.getTracks().forEach(t => t.stop());
-        videoStreamRef.current = null;
-      }
-      if (videoRef.current) videoRef.current.srcObject = null;
+    // Open recording modal which will handle capture and upload
+    if (!sessionId) {
+      setVideoStatus('No interview session found. Please start the interview again from setup.');
+      return;
     }
+    setShowVideoModal(true);
   };
 
   const handleVideoStopResponse = (data) => {
@@ -693,7 +658,7 @@ export const Interview = () => {
       frameTimerRef.current = null;
     }
     if (recognitionRef.current) {
-      try { recognitionRef.current.stop(); } catch (e) {}
+      try { recognitionRef.current.stop(); } catch (e) { }
     }
 
     try {
@@ -717,7 +682,7 @@ export const Interview = () => {
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      
+
       // Setup Volume Analysis
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const analyser = audioContext.createAnalyser();
@@ -726,7 +691,7 @@ export const Interview = () => {
       analyser.fftSize = 256;
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      
+
       audioContextRef.current = audioContext;
       analyserRef.current = analyser;
 
@@ -748,7 +713,7 @@ export const Interview = () => {
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = 'en-US';
-        
+
         let finalTranscript = '';
         recognition.onresult = (event) => {
           let interimTranscript = '';
@@ -758,11 +723,11 @@ export const Interview = () => {
           }
           setLocalTranscript(finalTranscript + interimTranscript);
         };
-        
+
         // Ensure recognition stays active until manual stop
         recognition.onend = () => {
           if (isRecordingRef.current) {
-            try { recognition.start(); } catch (e) {}
+            try { recognition.start(); } catch (e) { }
           }
         };
 
@@ -782,9 +747,9 @@ export const Interview = () => {
 
       mediaRecorder.onstop = async () => {
         if (audioChunksRef.current.length === 0) {
-           setUserAnswer('');
-           setFeedback('No audio was captured. Please record your answer again.');
-           return;
+          setUserAnswer('');
+          setFeedback('No audio was captured. Please record your answer again.');
+          return;
         }
 
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
@@ -794,7 +759,7 @@ export const Interview = () => {
         if (localTranscript) {
           formData.append('answer', localTranscript);
         }
-        
+
         setSubmitting(true);
         stream.getTracks().forEach(t => t.stop());
 
@@ -806,14 +771,14 @@ export const Interview = () => {
           setFeedback(data.feedback || 'Your audio answer was processed.');
 
           if (data.finished) {
-             setFinished(true);
-             setShowNextButton(false);
-             setPendingNextQuestion(null);
-             try { await interviewAPI.completeInterview(sessionId); } catch (e) {}
-             setTimeout(() => navigate(`/results?session=${sessionId}`), 2500);
+            setFinished(true);
+            setShowNextButton(false);
+            setPendingNextQuestion(null);
+            try { await interviewAPI.completeInterview(sessionId); } catch (e) { }
+            setTimeout(() => navigate(`/results?session=${sessionId}`), 2500);
           } else if (data.next_question) {
-             setPendingNextQuestion(data.next_question);
-             setShowNextButton(true);
+            setPendingNextQuestion(data.next_question);
+            setShowNextButton(true);
           }
         } catch (err) {
           setFeedback('Encountered an error while processing your audio. Please try again.');
@@ -831,17 +796,17 @@ export const Interview = () => {
     }
   };
 
-  const stopRecording = () => { 
-    if (mediaRecorderRef.current && isRecordingRef.current) { 
-      mediaRecorderRef.current.stop(); 
-      setRecordingState(false); 
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecordingRef.current) {
+      mediaRecorderRef.current.stop();
+      setRecordingState(false);
       setVolume(0);
       if (recognitionRef.current) {
-         try { recognitionRef.current.stop(); } catch (e) {}
+        try { recognitionRef.current.stop(); } catch (e) { }
       }
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       if (audioContextRef.current) audioContextRef.current.close();
-    } 
+    }
   };
 
   const handleEnd = () => navigate(`/results?session=${sessionId}`);
@@ -855,77 +820,64 @@ export const Interview = () => {
   return (
     <PageTransition className="h-screen bg-[#F0F7FF] flex flex-col overflow-hidden">
       {showHardwareCheck && (
-        <HardwareCheck 
-          mode={mode} 
-          onComplete={() => setShowHardwareCheck(false)} 
+        <HardwareCheck
+          mode={mode}
+          onComplete={() => setShowHardwareCheck(false)}
         />
       )}
 
       {/* ── Fixed Minimal Header ── */}
       <div className="bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 h-14 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-           <button onClick={() => navigate('/dashboard')} className="w-8 h-8 rounded-lg border border-slate-100 flex items-center justify-center hover:bg-slate-50">
-              <ArrowLeft className="w-3.5 h-3.5 text-slate-500" />
-           </button>
-           <div>
-              <h1 className="text-[12px] font-black text-slate-900 leading-tight truncate max-w-[200px]">{role}</h1>
-              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{company}</p>
-           </div>
+          <button onClick={() => navigate('/dashboard')} className="w-8 h-8 rounded-lg border border-slate-100 flex items-center justify-center hover:bg-slate-50">
+            <ArrowLeft className="w-3.5 h-3.5 text-slate-500" />
+          </button>
+          <div>
+            <h1 className="text-[12px] font-black text-slate-900 leading-tight truncate max-w-[200px]">{role}</h1>
+            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{company}</p>
+          </div>
         </div>
 
         <div className="flex items-center gap-5">
-           <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-lg border border-slate-100">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[11px] font-black tabular-nums">{formatTime(timer)}</span>
-           </div>
-           <div className="hidden sm:flex flex-col items-end gap-0.5">
-              <span className="text-[8px] font-black text-slate-400 uppercase">Step {questionIdx + 1} / {totalQuestions}</span>
-              <div className="w-24 h-1 bg-slate-100 rounded-full overflow-hidden">
-                 <motion.div className="h-full bg-primary-500" animate={{ width: `${progress}%` }} />
-              </div>
-           </div>
-           <button onClick={handleEnd} className="text-[9px] font-black text-red-500 uppercase hover:text-red-600 tracking-wider">End Session</button>
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-lg border border-slate-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[11px] font-black tabular-nums">{formatTime(timer)}</span>
+          </div>
+          <div className="hidden sm:flex flex-col items-end gap-0.5">
+            <span className="text-[8px] font-black text-slate-400 uppercase">Step {questionIdx + 1} / {totalQuestions}</span>
+            <div className="w-24 h-1 bg-slate-100 rounded-full overflow-hidden">
+              <motion.div className="h-full bg-primary-500" animate={{ width: `${progress}%` }} />
+            </div>
+          </div>
+          <button onClick={handleEnd} className="text-[9px] font-black text-red-500 uppercase hover:text-red-600 tracking-wider">End Session</button>
         </div>
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        {mode !== 'video' && (
-          <div className="px-8 py-2.5 bg-white border-b border-slate-100 shrink-0">
-            <div className="max-w-4xl mx-auto">
-              {/* Tags Row */}
-              <div className="flex items-center gap-2 mb-2.5 flex-wrap">
-                <div className={cn("inline-block px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest", diffStyle.bg, diffStyle.text)}>
-                  Question {questionIdx + 1} of {totalQuestions}
-                </div>
-                {qType && (
-                  <span className={cn("inline-block px-2.5 py-1 rounded text-[9px] font-black uppercase", agentStyles[qType]?.light || "bg-slate-100", agentStyles[qType]?.text || "text-slate-500")}>
-                    {agentStyles[qType]?.label || qType}
-                  </span>
-                )}
-                <div className={cn("inline-block px-2.5 py-1 rounded text-[9px] font-black uppercase", diffStyle.bg, diffStyle.text)}>
-                  {currentDifficulty}
-                </div>
+        <div className="px-8 py-2.5 bg-white border-b border-slate-100 shrink-0">
+          <div className="max-w-4xl mx-auto">
+            {/* Tags Row */}
+            <div className="flex items-center gap-2 mb-2.5 flex-wrap">
+              <div className={cn("inline-block px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest", diffStyle.bg, diffStyle.text)}>
+                Question {questionIdx + 1} of {totalQuestions}
               </div>
-              {/* Question Text */}
-              <h2 className="text-2xl font-bold text-slate-900 leading-relaxed">{activeQuestionText}</h2>
+              {qType && (
+                <span className={cn("inline-block px-2.5 py-1 rounded text-[9px] font-black uppercase", agentStyles[qType]?.light || "bg-slate-100", agentStyles[qType]?.text || "text-slate-500")}>
+                  {agentStyles[qType]?.label || qType}
+                </span>
+              )}
+              <div className={cn("inline-block px-2.5 py-1 rounded text-[9px] font-black uppercase", diffStyle.bg, diffStyle.text)}>
+                {currentDifficulty}
+              </div>
             </div>
+            {/* Question Text */}
+            <h2 className="text-2xl font-bold text-slate-900 leading-relaxed">{activeQuestionText}</h2>
           </div>
-        )}
+        </div>
 
-        {mode === 'video' ? (
-          <VideoInterviewPanel
-            videoRef={videoRef}
-            stats={videoStats}
-            isRecording={isRecording}
-            submitting={submitting}
-            statusMessage={videoStatus}
-            backendTranscript={savedTranscript}
-            onToggleRecording={isRecording ? stopVideoRecording : startVideoRecording}
-          />
-        ) : (
-          <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-            {/* Scrollable Content Area - Increased Height */}
-            <div className="flex-1 overflow-y-auto px-8 py-4 pb-2">
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          {/* Scrollable Content Area - Increased Height */}
+          <div className="flex-1 overflow-y-auto px-8 py-4 pb-2">
               <div className="max-w-4xl mx-auto space-y-6">
                 {/* User Answer */}
                 {userAnswer && (
@@ -1017,7 +969,11 @@ export const Interview = () => {
                   ) : (
                     <div className="flex justify-center">
                       <motion.button
-                        onClick={isRecording ? stopRecording : startRecording}
+                        onClick={
+                          mode === 'video'
+                            ? () => startVideoRecording()
+                            : (isRecording ? stopRecording : startRecording)
+                        }
                         disabled={submitting}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
@@ -1026,8 +982,18 @@ export const Interview = () => {
                           isRecording ? "bg-red-500 text-white shadow-red-500/20 hover:bg-red-600" : "bg-primary-500 text-white shadow-primary-500/20 hover:bg-primary-600"
                         )}
                       >
-                        {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : (isRecording ? <Square className="w-5 h-5 fill-white" /> : <Mic className="w-5 h-5" />)}
-                        {isRecording ? "Stop Recording" : "Record Answer"}
+                        {submitting ? (
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                        ) : (
+                          <>
+                            {mode === 'video' ? (
+                              <Video className="w-5 h-5" />
+                            ) : (
+                              <Mic className="w-5 h-5" />
+                            )}
+                          </>
+                        )}
+                        {mode === 'video' ? 'Record Video Answer' : 'Record Answer'}
                       </motion.button>
                     </div>
                   )}
@@ -1035,8 +1001,40 @@ export const Interview = () => {
               </div>
             )}
           </div>
-        )}
-      </div>
+        </div>
+
+        {/* Video Recording Modal */}
+      {showVideoModal && (
+        <VideoRecordingModal
+          sessionId={sessionId}
+          questionText={activeQuestionText}
+          onClose={(data) => {
+            setShowVideoModal(false);
+            if (data.error) {
+              setFeedback('Error uploading video. Please try again.');
+              setSubmitting(false);
+            } else if (!data.cancelled) {
+              const userTranscript = data.transcript || '(Video Answer)';
+              setUserAnswer(userTranscript);
+              setFeedback(data.feedback || 'Your video answer was processed.');
+              setSubmitting(false);
+
+              if (data.finished) {
+                setFinished(true);
+                setShowNextButton(false);
+                setPendingNextQuestion(null);
+                try { 
+                  interviewAPI.completeInterview(sessionId); 
+                } catch (e) { }
+                setTimeout(() => navigate(`/results?session=${sessionId}`), 2500);
+              } else if (data.next_question) {
+                setPendingNextQuestion(data.next_question);
+                setShowNextButton(true);
+              }
+            }
+          }}
+        />
+      )}
     </PageTransition>
   );
 };
