@@ -190,36 +190,26 @@ export const Results = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <PageTransition className="pt-8 pb-16 px-5 sm:px-7 lg:px-8">
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader2 className="w-10 h-10 text-primary-500 animate-spin" />
-        </div>
-      </PageTransition>
-    );
-  }
-
-  /* ── Derived data ── */
-  const eval_ = data?.evaluation || {};
-  const score = eval_.final_score || 0;
-  const grade = eval_.grade || (score >= 80 ? 'A' : score >= 60 ? 'B' : score >= 40 ? 'C' : 'D');
-  const strengths = eval_.strengths || [];
-  const improvements = eval_.improvements || [];
-  const roadmap = eval_.roadmap?.steps || (Array.isArray(eval_.roadmap) ? eval_.roadmap : []);
-  const recommendation = eval_.recommendation || '';
-  const feedback = eval_.feedbacks?.coordinator || eval_.coordinator_feedback || '';
-  const agentsUsed = eval_.agents_used || ['hr', 'technical', 'stress'];
-  const interviewMode = eval_.interview_mode || data?.interview_mode || 'mixed';
+  /* ── Derived data (safe with null data during loading) ── */
+   const eval_            = data?.evaluation || {};
+  const score            = eval_.final_score || 0;
+  const grade            = eval_.grade || (score >= 80 ? 'A' : score >= 60 ? 'B' : score >= 40 ? 'C' : 'D');
+  const strengths        = eval_.strengths || [];
+  const improvements     = eval_.improvements || [];
+  const roadmap          = eval_.roadmap?.steps || (Array.isArray(eval_.roadmap) ? eval_.roadmap : []);
+  const recommendation   = eval_.recommendation || '';
+  const feedback         = eval_.feedbacks?.coordinator || eval_.coordinator_feedback || '';
+  const agentsUsed       = eval_.agents_used || ['hr', 'technical', 'stress'];
+  const interviewMode    = eval_.interview_mode || data?.interview_mode || 'mixed';
   const detailedAnalysis = eval_.detailed_analysis || {};
 
-  const analytics = eval_.performance_analytics || {};
-  const perQuestionData = analytics.performance_data?.per_question || [];
+  const analytics             = eval_.performance_analytics || {};
+  const perQuestionData       = analytics.performance_data?.per_question || [];
   const difficultyProgression = analytics.difficulty_progression || [];
-  const avgResponseTime = analytics.average_response_time || 0;
-  const totalFillerWords = analytics.total_filler_words || 0;
-  const performanceTrend = analytics.performance_trend || 'stable';
-  const finalDifficulty = analytics.final_difficulty_reached || 'easy';
+  const avgResponseTime       = analytics.average_response_time || 0;
+  const totalFillerWords      = analytics.total_filler_words || 0;
+  const performanceTrend      = analytics.performance_trend || 'stable';
+  const finalDifficulty       = analytics.final_difficulty_reached || 'easy';
 
   const hrScores = eval_.hr_scores || {};
   const techScores = eval_.technical_scores || {};
@@ -265,6 +255,16 @@ export const Results = () => {
     { label: 'Trend', value: performanceTrend.charAt(0).toUpperCase() + performanceTrend.slice(1), icon: TrendingUp, iconColor: 'text-emerald-500', bg: 'bg-emerald-50' },
     { label: 'Max Difficulty', value: finalDifficulty.charAt(0).toUpperCase() + finalDifficulty.slice(1), icon: Target, iconColor: 'text-violet-500', bg: 'bg-violet-50' },
   ], [avgResponseTime, totalFillerWords, performanceTrend, finalDifficulty]);
+
+  if (loading) {
+    return (
+      <PageTransition className="pt-8 pb-16 px-5 sm:px-7 lg:px-8">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="w-10 h-10 text-primary-500 animate-spin" />
+        </div>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition className="pt-8 pb-16 px-5 sm:px-7 lg:px-8">
